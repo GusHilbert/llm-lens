@@ -1,0 +1,296 @@
+/* ============================================================
+   LLM Lens — Sistema de Design
+   Paleta: azul-carvão + ciano (sinal) + âmbar (destaque/pico)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --void: #0A0E14;
+  --panel: #12161F;
+  --panel-raised: #171C27;
+  --border: #232937;
+  --ink: #E4E7EC;
+  --muted: #7C8494;
+  --signal: #4FD1C5;
+  --signal-dim: rgba(79, 209, 197, 0.15);
+  --pulse: #F0A868;
+  --pulse-dim: rgba(240, 168, 104, 0.18);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Grade de fundo sutil, tipo tela de osciloscópio */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(79, 209, 197, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 209, 197, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p { margin: 0; }
+
+a { color: var(--signal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+code, .mono { font-family: var(--font-mono); }
+
+/* Base compartilhada pra qualquer textarea do site — antes só a caixa
+   principal tinha isso, deixando outras caixas (ex: "escreva junto")
+   com o fundo branco padrão do navegador, destoando do resto. */
+textarea {
+  width: 100%;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--signal);
+}
+
+.lesson-text {
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin-top: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Barras de sinal (elemento de assinatura — reaparece como
+   mapa de atenção de verdade na página principal)
+   ============================================================ */
+.signal-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 48px;
+}
+
+.signal-bars .bar {
+  width: 4px;
+  background: var(--signal);
+  border-radius: 2px;
+  opacity: 0.55;
+  animation: pulse-bar 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* ============================================================
+   Botões de navegação de idioma (não são toggle — são links)
+   ============================================================ */
+.lang-nav {
+  display: flex;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.lang-nav a {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.lang-nav a.active {
+  color: var(--signal);
+  border-color: var(--signal-dim);
+  background: var(--signal-dim);
+}
+
+.lang-nav a:not(.active):hover {
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+/* ============================================================
+   Toggle Simples / Técnico
+   ============================================================ */
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.mode-toggle .switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.mode-toggle .switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: var(--signal);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.mode-toggle .switch.on::after {
+  transform: translateX(20px);
+}
+
+.mode-toggle .label.active { color: var(--ink); }
+
+/* ============================================================
+   Layout utilitário
+   ============================================================ */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.hint { color: var(--muted); font-size: 0.92rem; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--signal);
+  color: var(--void);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.btn:hover { transform: translateY(-1px); opacity: 0.92; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+/* Tooltip simples (usado no modo técnico pra termos com glossário) */
+.term {
+  border-bottom: 1px dashed var(--muted);
+  cursor: help;
+  position: relative;
+}
+
+.term .tip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  font-size: 0.82rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: max-content;
+  max-width: 240px;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.term:hover .tip { visibility: visible; opacity: 1; }
+
+/* Fade-in escalonado ao revelar seções após análise */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: reveal-in 0.5s ease forwards;
+}
+
+@keyframes reveal-in {
+  to { opacity: 1; transform: translateY(0); }
+}

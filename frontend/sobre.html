@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sobre — LLM Lens</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .sobre-wrap {
+      position: relative; z-index: 1;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+    .back-link { display: inline-block; margin-bottom: 32px; color: var(--muted); }
+    .avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--signal-dim);
+      border: 1px solid var(--signal);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    .sobre-wrap h1 { font-size: 1.6rem; margin-bottom: 4px; }
+    .sobre-wrap .role { color: var(--muted); margin-bottom: 20px; }
+    .links { display: flex; gap: 12px; margin-bottom: 32px; }
+    .links a {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: var(--ink);
+    }
+    .links a:hover { border-color: var(--signal); text-decoration: none; }
+    .sobre-wrap section { margin-top: 28px; }
+    .sobre-wrap h2 { font-size: 1.05rem; margin-bottom: 10px; color: var(--signal); }
+    .sobre-wrap p { color: var(--ink); font-size: 0.96rem; }
+    .stack-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .stack-list span {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="sobre-wrap">
+    <a class="back-link" id="back-link" href="app.html?lang=pt">← Voltar pro LLM Lens</a>
+
+    <div class="avatar">🧠</div>
+    <h1>Gustav Hilbert</h1>
+    <p class="role" id="role-text">TCC — Pós-Graduação em Inteligência Artificial Generativa & LLMs, PUC-Rio / Laboratório ICA</p>
+
+    <div class="links">
+      <a href="https://br.linkedin.com/in/gustavhilbert" target="_blank" rel="noopener">🔗 LinkedIn</a>
+    </div>
+
+    <section>
+      <h2 id="project-heading">Sobre o projeto</h2>
+      <p id="project-text">
+        O LLM Lens é uma ferramenta interativa de código aberto que mostra, passo a passo,
+        como um modelo de linguagem processa e gera texto — tokenização, atenção e previsão
+        de próxima palavra — rodando inteiramente no navegador, sem nenhum servidor por trás.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="stack-heading">Stack técnica</h2>
+      <div class="stack-list">
+        <span>Transformers.js</span>
+        <span>ONNX Runtime Web</span>
+        <span>GPT-2 small (PT-BR)</span>
+        <span>GitHub Pages</span>
+        <span>PyTorch</span>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    const params = new URLSearchParams(window.location.search);
+    const lang = params.get("lang") === "en" ? "en" : "pt";
+    document.getElementById("html-root").lang = lang === "pt" ? "pt-br" : "en";
+    document.getElementById("back-link").href = `app.html?lang=${lang}`;
+
+    if (lang === "en") {
+      document.title = "About — LLM Lens";
+      document.getElementById("back-link").textContent = "← Back to LLM Lens";
+      document.getElementById("role-text").textContent =
+        "Capstone Project — Postgraduate in Generative AI & LLMs, PUC-Rio / ICA Lab";
+      document.getElementById("project-heading").textContent = "About the project";
+      document.getElementById("project-text").textContent =
+        "LLM Lens is an open-source interactive tool that shows, step by step, how a language " +
+        "model processes and generates text — tokenization, attention, and next-word prediction " +
+        "— running entirely in the browser, with no server behind it.";
+      document.getElementById("stack-heading").textContent = "Tech stack";
+    }
+  </script>
+</body>
+</html>

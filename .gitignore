@@ -1,0 +1,28 @@
+# Segredos — NUNCA versionar chaves de API
+.env
+*.env
+**/secrets.py
+**/*_token*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
+
+# Node (caso o frontend evolua pra algo com build)
+node_modules/
+dist/
+
+# Modelos baixados localmente (não versionar pesos, só código)
+*.bin
+*.safetensors
+*.pt
+
+# Sistema
+.DS_Store
+.ipynb_checkpoints/
+
+# Config local de ferramentas (não faz parte do projeto)
+.claude/

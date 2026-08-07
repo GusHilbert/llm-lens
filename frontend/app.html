@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-br" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM Lens</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---------- Overlay de carregamento ---------- */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: var(--void);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      transition: opacity 0.4s ease;
+    }
+    #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+    #loading-overlay h2 { font-size: 1.3rem; margin-bottom: 24px; }
+    .progress-track {
+      width: min(360px, 80vw);
+      height: 8px;
+      background: var(--panel-raised);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--signal);
+      transition: width 0.25s ease;
+    }
+    #loading-pct { font-family: var(--font-mono); color: var(--muted); font-size: 0.85rem; margin-bottom: 28px; }
+    .loading-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      max-width: 320px;
+    }
+
+    /* ---------- Header ---------- */
+    header.app-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 24px 8px;
+    }
+    header.app-header .logo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+    header.app-header .controls { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+    /* ---------- Pipeline animado ---------- */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 22px 16px;
+      margin-bottom: 28px;
+    }
+    .pipeline .stage {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--signal);
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--panel);
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .pipeline .stage.active { border-color: var(--signal); background: var(--signal-dim); box-shadow: 0 0 10px rgba(79, 209, 197, 0.35); }
+    .pipeline .arrow { color: var(--border); font-size: 0.9rem; }
+
+    /* ---------- Numeração das seções (badge circular) ---------- */
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      border: 1.5px solid var(--signal);
+      background: var(--signal-dim);
+      color: var(--signal) !important;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.95rem !important;
+    }
+
+    /* ---------- Input ---------- */
+    .input-panel textarea { margin: 12px 0; }
+    .examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .example-chip {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: transparent;
+    }
+    .example-chip:hover { color: var(--signal); border-color: var(--signal-dim); }
+
+    /* ---------- Seções ---------- */
+    section.lesson { margin-top: 22px; }
+    section.lesson .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    section.lesson .section-num {
+      font-family: var(--font-mono);
+      color: var(--signal);
+      font-size: 0.85rem;
+    }
+    .insight {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: var(--panel-raised);
+      border-left: 2px solid var(--signal);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.92rem;
+      color: var(--ink);
+    }
+    .insight.hot { border-left-color: var(--pulse); }
+
+    .tokens-view { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .token-chip {
+      font-family: var(--font-mono);
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: var(--signal-dim);
+      border: 1px solid var(--signal);
+      font-size: 0.9rem;
+    }
+
+    .attention-controls { display: flex; gap: 18px; margin: 14px 0; font-size: 0.85rem; color: var(--muted); }
+    .attention-controls select {
+      background: var(--panel-raised);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+    }
+    .attention-view { overflow-x: auto; }
+    .attention-grid { border-collapse: collapse; font-family: var(--font-mono); }
+    .attention-grid td { width: 34px; height: 34px; text-align: center; border: 1px solid var(--border); font-size: 0.68rem; }
+    .attention-grid th { font-size: 0.68rem; color: var(--muted); padding: 4px; writing-mode: vertical-rl; }
+    .attention-grid td.hot-cell { outline: 2px solid var(--pulse); outline-offset: -2px; }
+
+    /* ---------- Destrinchamento da atenção: pra onde cada token olha ---------- */
+    .attention-breakdown { margin-top: 20px; }
+    .attention-breakdown-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .breakdown-row { display: flex; align-items: center; gap: 14px; background: var(--panel-raised); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .breakdown-row:last-child { margin-bottom: 0; }
+    .breakdown-source {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ink);
+      width: 96px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .breakdown-targets { display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; }
+    .breakdown-target { display: grid; grid-template-columns: 72px 1fr 42px; align-items: center; gap: 8px; }
+    .breakdown-target-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .breakdown-bar-bg { background: var(--panel-raised); border-radius: 4px; overflow: hidden; height: 10px; }
+    .breakdown-bar-fill { background: var(--signal); opacity: 0.55; height: 100%; border-radius: 4px; transition: background 0.12s ease, opacity 0.12s ease; }
+    .breakdown-target:hover .breakdown-bar-fill { background: var(--pulse); opacity: 1; }
+    .breakdown-target-top .breakdown-target-label { color: var(--ink); font-weight: 600; }
+    .breakdown-target-top .breakdown-bar-bg { height: 12px; }
+    .breakdown-target-top .breakdown-bar-fill { opacity: 1; box-shadow: 0 0 8px rgba(79, 209, 197, 0.65); }
+    .breakdown-target-pct { font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); text-align: right; }
+
+    .next-token-view { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+    .prob-row { display: grid; grid-template-columns: 90px 1fr 56px; align-items: center; gap: 10px; cursor: pointer; font-family: var(--font-mono); font-size: 0.88rem; }
+    .prob-bar-bg { background: var(--panel-raised); border-radius: 4px; overflow: hidden; height: 16px; }
+    .prob-bar-fill { background: var(--signal); height: 100%; border-radius: 4px; }
+    .prob-row:hover .prob-bar-fill { background: var(--pulse); }
+
+    .write-output {
+      font-family: var(--font-mono);
+      background: var(--panel-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 14px;
+      min-height: 60px;
+      font-size: 1rem;
+    }
+    .write-output .cursor-hint { color: var(--muted); }
+    .write-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .suggestion-chip {
+      font-family: var(--font-mono);
+      background: var(--signal-dim);
+      border: 1px solid var(--signal);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+    }
+    .suggestion-chip:hover { background: var(--pulse-dim); border-color: var(--pulse); }
+    .write-reset { margin-top: 12px; }
+
+    footer.app-footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 40px 24px;
+    }
+
+    /* ---------- Painel "Sobre" (dentro da própria página — não recarrega o modelo) ---------- */
+    #about-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(10, 14, 20, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    #about-overlay.open { opacity: 1; pointer-events: auto; }
+    .about-panel {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 32px;
+    }
+    .about-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .about-close:hover { color: var(--ink); border-color: var(--signal); }
+    .about-panel .avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--signal-dim);
+      border: 1px solid var(--signal);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+    .about-panel h2 { font-size: 1.4rem; margin-bottom: 4px; }
+    .about-panel .role { color: var(--muted); margin-bottom: 16px; font-size: 0.92rem; }
+    .about-links { display: flex; gap: 12px; margin-bottom: 24px; }
+    .about-links a {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: var(--ink);
+    }
+    .about-links a:hover { border-color: var(--signal); text-decoration: none; }
+    .about-panel section { margin-top: 22px; }
+    .about-panel h3 { font-size: 1rem; margin-bottom: 8px; color: var(--signal); }
+    .about-panel p { color: var(--ink); font-size: 0.92rem; }
+    .about-stack-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .about-stack-list span {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+    }
+
+    /* ---------- Responsividade (celular) — por último, pra vencer a cascata ---------- */
+    @media (max-width: 640px) {
+      header.app-header { justify-content: center; text-align: center; padding: 20px 16px 8px; }
+      header.app-header .controls { justify-content: center; width: 100%; }
+      .wrap { padding: 0 16px 60px; }
+      .panel { padding: 18px; }
+      .pipeline { gap: 4px; padding: 16px 8px; }
+      .pipeline .stage { font-size: 0.74rem; padding: 6px 10px; }
+      .pipeline .arrow { font-size: 0.75rem; }
+      .attention-controls { flex-direction: column; gap: 10px; }
+      .attention-grid td { width: 26px; height: 26px; font-size: 0.6rem; }
+      .attention-grid th { font-size: 0.6rem; }
+      .prob-row { grid-template-columns: 64px 1fr 48px; font-size: 0.8rem; gap: 6px; }
+      .breakdown-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .breakdown-source { width: auto; }
+      .breakdown-target { grid-template-columns: 56px 1fr 38px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div id="loading-overlay">
+    <div class="signal-bars" aria-hidden="true">
+      <span class="bar" style="height:60%; animation-delay:0s"></span>
+      <span class="bar" style="height:90%; animation-delay:0.15s"></span>
+      <span class="bar" style="height:40%; animation-delay:0.3s"></span>
+      <span class="bar" style="height:75%; animation-delay:0.45s"></span>
+      <span class="bar" style="height:55%; animation-delay:0.6s"></span>
+    </div>
+    <h2 id="loading-title">Preparando seu modelo…</h2>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div id="loading-pct">0%</div>
+    <div class="loading-note">
+      <span id="loading-note-text">Isso só acontece na primeira vez — depois fica salvo no seu navegador. Tudo roda localmente, nenhum dado sai da sua máquina.</span>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="logo">🧠 LLM Lens</div>
+    <div class="controls">
+      <div class="mode-toggle">
+        <span class="label" id="mode-label-simple">Simples</span>
+        <div class="switch" id="mode-switch" role="button" aria-label="Alternar modo de explicação"></div>
+        <span class="label" id="mode-label-technical">Técnico</span>
+      </div>
+      <nav class="lang-nav" id="lang-nav">
+        <a href="#" id="lang-pt"><svg width="16" height="12" viewBox="0 0 18 13" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;margin-right:4px;"><rect width="18" height="13" rx="1.5" fill="#009739"/><polygon points="9,2 16,6.5 9,11 2,6.5" fill="#FEDD00"/><circle cx="9" cy="6.5" r="2.6" fill="#012169"/></svg>PT</a>
+        <a href="#" id="lang-en">🌐 EN</a>
+      </nav>
+      <a href="sobre.html?lang=pt" id="sobre-link" class="hint">Sobre</a>
+    </div>
+  </header>
+
+  <div id="about-overlay">
+    <div class="about-panel">
+      <button class="about-close" id="about-close" aria-label="Fechar">✕</button>
+      <div class="avatar">🧠</div>
+      <h2>Gustav Hilbert</h2>
+      <p class="role" id="about-role">TCC — Pós-Graduação em Inteligência Artificial Generativa &amp; LLMs, PUC-Rio / Laboratório ICA</p>
+      <div class="about-links">
+        <a href="https://br.linkedin.com/in/gustavhilbert" target="_blank" rel="noopener">🔗 LinkedIn</a>
+      </div>
+      <section>
+        <h3 id="about-project-heading">Sobre o projeto</h3>
+        <p id="about-project-text">
+          O LLM Lens é uma ferramenta interativa de código aberto que mostra, passo a passo,
+          como um modelo de linguagem processa e gera texto — tokenização, atenção e previsão
+          de próxima palavra — rodando inteiramente no navegador, sem nenhum servidor por trás.
+        </p>
+      </section>
+      <section>
+        <h3 id="about-stack-heading">Stack técnica</h3>
+        <div class="about-stack-list">
+          <span>Transformers.js</span>
+          <span>ONNX Runtime Web</span>
+          <span>GPT-2 small (PT-BR)</span>
+          <span>GitHub Pages</span>
+          <span>PyTorch</span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="pipeline" id="pipeline">
+      <span class="stage" data-stage="text">Texto</span><span class="arrow">→</span>
+      <span class="stage" data-stage="token">Token</span><span class="arrow">→</span>
+      <span class="stage" data-stage="embedding">Embedding</span><span class="arrow">→</span>
+      <span class="stage" data-stage="attention">Atenção</span><span class="arrow">→</span>
+      <span class="stage" data-stage="prediction">Previsão</span>
+    </div>
+
+    <div class="panel input-panel">
+      <p class="eyebrow" id="input-eyebrow">DIGITE UMA FRASE</p>
+      <textarea id="prompt-input" rows="2">O rato que o gato perseguiu fugiu</textarea>
+      <button class="btn" id="analyze-btn">Analisar</button>
+      <div class="examples" id="example-chips"></div>
+    </div>
+
+    <section class="lesson reveal" id="section-tokens" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">1</span><h2 id="tokens-title">Tokenização</h2></div>
+        <p class="hint" id="tokens-hint">Cada bloco é um token — a unidade mínima que o modelo enxerga.</p>
+        <p class="lesson-text" id="tokens-lesson"></p>
+        <div class="tokens-view" id="tokens-view"></div>
+        <div class="insight" id="tokens-insight"></div>
+      </div>
+    </section>
+
+    <section class="lesson reveal" id="section-attention" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">2</span><h2 id="attention-title">Atenção</h2></div>
+        <p class="hint" id="attention-hint">Escolha uma camada e uma cabeça para ver para onde cada token "olha".</p>
+        <p class="lesson-text" id="attention-lesson"></p>
+        <div class="attention-controls">
+          <label><span id="layer-label">Camada</span>: <select id="layer-select"></select></label>
+          <label><span id="head-label">Cabeça</span>: <select id="head-select"></select></label>
+        </div>
+        <div class="attention-view"><div id="attention-view"></div></div>
+        <div class="insight" id="attention-insight"></div>
+        <div class="attention-breakdown">
+          <p class="attention-breakdown-title" id="attention-breakdown-title"></p>
+          <div id="attention-breakdown"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lesson reveal" id="section-next" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">3</span><h2 id="next-title">Próxima palavra</h2></div>
+        <p class="hint" id="next-hint">A distribuição de probabilidade que o modelo calculou para a próxima palavra.</p>
+        <p class="lesson-text" id="next-lesson"></p>
+        <div class="next-token-view" id="next-token-view"></div>
+        <div class="insight" id="next-insight"></div>
+      </div>
+    </section>
+
+    <section class="lesson reveal" id="section-write" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">4</span><h2 id="write-title">Escreva junto com o modelo</h2></div>
+        <p class="hint" id="write-hint">Continue uma frase e deixe o modelo sugerir a próxima palavra, uma de cada vez.</p>
+        <p class="lesson-text" id="write-lesson"></p>
+        <textarea id="write-input" rows="1">Era uma vez</textarea>
+        <button class="btn btn-ghost" id="write-start-btn">Começar</button>
+        <div class="write-output" id="write-output" style="display:none"></div>
+        <div class="write-suggestions" id="write-suggestions"></div>
+        <button class="btn btn-ghost write-reset" id="write-reset-btn" style="display:none">Recomeçar</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span id="footer-text">Projeto de código aberto — TCC Pós-Graduação IA Generativa &amp; LLMs (PUC-Rio / ICA).</span>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
