@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bastidores — LLM Lens</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .bastidores-header {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px 8px;
+    }
+    .back-link { color: var(--muted); }
+    .bastidores-wrap {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+    }
+    .bastidores-wrap h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    .bastidores-intro { color: var(--muted); font-size: 1rem; margin-bottom: 32px; max-width: 60ch; }
+    .bastidores-section { margin-top: 20px; }
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      border: 1.5px solid var(--signal);
+      background: var(--signal-dim);
+      color: var(--signal);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .bastidores-section h2 { font-size: 1.15rem; }
+    .reference-note {
+      max-width: 720px;
+      margin: 8px auto 60px;
+      padding: 0 24px;
+      position: relative; z-index: 1;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .reference-note a { color: var(--signal); }
+
+    @media (max-width: 640px) {
+      .bastidores-header { text-align: center; padding: 20px 16px 8px; }
+      .bastidores-wrap { padding: 16px 16px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="bastidores-header">
+    <a class="back-link" id="back-link" href="app.html?lang=pt">← Voltar pro LLM Lens</a>
+  </header>
+
+  <main class="bastidores-wrap">
+    <h1 id="page-title">Bastidores</h1>
+    <p class="bastidores-intro" id="page-intro">
+      Como o LLM Lens foi construído — decisões, imprevistos e o que ainda falta.
+    </p>
+
+    <div id="sections"></div>
+  </main>
+
+  <p class="reference-note" id="reference-note"></p>
+
+  <script type="module">
+    const params = new URLSearchParams(window.location.search);
+    const LANG = params.get("lang") === "en" ? "en" : "pt";
+    document.getElementById("html-root").lang = LANG === "pt" ? "pt-br" : "en";
+    document.getElementById("back-link").href = `app.html?lang=${LANG}`;
+
+    const UI = {
+      pt: {
+        title: "Bastidores — LLM Lens",
+        backLink: "← Voltar pro LLM Lens",
+        pageTitle: "Bastidores",
+        pageIntro: "Como o LLM Lens foi construído — decisões, imprevistos e o que ainda falta.",
+      },
+      en: {
+        title: "Behind the scenes — LLM Lens",
+        backLink: "← Back to LLM Lens",
+        pageTitle: "Behind the scenes",
+        pageIntro: "How LLM Lens was built — decisions, surprises, and what's still missing.",
+      },
+    };
+
+    const SECTIONS = [
+      {
+        title: { pt: "Por que tudo roda no navegador", en: "Why everything runs in the browser" },
+        text: {
+          pt: "A ideia original era ter um servidor rodando o modelo. Só que hospedar computação de graça ficou mais difícil — os provedores gratuitos de IA (como o Hugging Face Spaces) passaram a cobrar por qualquer coisa além de um site estático (Spaces com Docker/Gradio agora exigem plano pago). Isso definiu a arquitetura: Transformers.js + ONNX Runtime Web rodando o modelo via WebAssembly direto no navegador, com o site publicado como HTML/CSS/JS estático no GitHub Pages — sem nenhum servidor por trás.",
+          en: "The original plan was to run the model on a server. But hosting free compute got harder — free AI providers like Hugging Face Spaces started charging for anything beyond a static site (Spaces with Docker/Gradio now require a paid plan). That settled the architecture: Transformers.js + ONNX Runtime Web running the model via WebAssembly straight in the browser, with the site published as static HTML/CSS/JS on GitHub Pages — no server involved at all.",
+        },
+      },
+      {
+        title: { pt: "Exportando o modelo pela primeira vez", en: "Exporting the model for the first time" },
+        text: {
+          pt: "O modelo usado (GPorTuguese-2, um GPT-2 pequeno treinado em português) precisou ser convertido pra um formato que o navegador entende (ONNX). A ferramenta oficial da Hugging Face (optimum) não deixava expor os \"pesos de atenção\" — o centro da explicação do site — como saída do modelo, porque isso exige subclassar configs internas específicas por arquitetura, algo instável entre versões. A solução foi escrever um wrapper simples ao redor do modelo, forçando a atenção a ser calculada e devolvendo esses pesos como saídas nomeadas explícitas via torch.onnx.export. Pegadinha registrada: o tokenizer precisa ser GPT2TokenizerFast, não GPT2Tokenizer — a versão \"lenta\" não gera o tokenizer.json que o Transformers.js exige pra carregar no navegador.",
+          en: "The model used (GPorTuguese-2, a small GPT-2 fine-tuned on Portuguese) needed converting into a format the browser understands (ONNX). Hugging Face's official tool (optimum) wouldn't let \"attention weights\" — the whole point of the site — be exposed as a model output, since that requires subclassing architecture-specific internal configs, which breaks across versions. The fix was writing a simple wrapper around the model, forcing attention to be computed and returning those weights as explicit named outputs via torch.onnx.export. One gotcha worth recording: the tokenizer has to be GPT2TokenizerFast, not GPT2Tokenizer — the \"slow\" version doesn't generate the tokenizer.json that Transformers.js needs to load in the browser.",
+        },
+      },
+      {
+        title: { pt: "V2: camadas ocultas e quantização", en: "V2: hidden layers and quantization" },
+        text: {
+          pt: "Meses depois, decidi adicionar duas coisas: mostrar como a \"representação interna\" de cada palavra muda ao passar pelas camadas do modelo (a seção \"Camadas ocultas\"), e deixar o modelo mais leve pra carregar mais rápido (quantização). Isso significou reexportar os dois modelos — português e inglês — do zero, incluindo os hidden states de cada camada como saídas extras, e depois aplicando quantização dinâmica em int8. O tamanho caiu de 653.7MB pra 165.3MB (25% do original). Antes de publicar, testei em dois passos: primeiro confirmei que a versão nova dava exatamente os mesmos resultados da antiga, depois comparei as respostas antes e depois de quantizar. No modelo em português bateu tudo certinho; no modelo em inglês (o GPT-2 base da OpenAI, sem fine-tuning, então já com previsões menos \"decididas\") uma das frases de teste mudou de resposta depois da quantização. Publiquei mesmo assim — o site é pedagógico, não depende de geração perfeita — mas fica registrado que esse modelo é mais sensível à quantização do que o em português. Um bug real também apareceu no meio do processo: comparar o modelo logo depois dele passar pela exportação dava resultado errado, porque a implementação interna de atenção muda sutilmente nesse processo — a correção foi recarregar uma cópia limpa do modelo só pra validação.",
+          en: "Months later, I decided to add two things: showing how each word's \"internal representation\" changes as it moves through the model's layers (the \"Hidden layers\" section), and making the model lighter to load faster (quantization). That meant re-exporting both models — Portuguese and English — from scratch, adding each layer's hidden states as extra outputs, then applying dynamic int8 quantization. Size dropped from 653.7MB to 165.3MB (25% of the original). Before publishing, I tested in two steps: first confirming the new version gave exactly the same results as the old one, then comparing answers before and after quantizing. The Portuguese model checked out fine; the English model (OpenAI's base GPT-2, not fine-tuned, so its predictions are already less \"decisive\") had one test sentence flip its answer after quantizing. I published it anyway — the site is pedagogical, it doesn't need perfect generation — but it's worth noting this model is more sensitive to quantization than the Portuguese one. A real bug also turned up mid-process: comparing the model right after it went through export gave the wrong result, because the internal attention implementation shifts subtly during that step — the fix was reloading a clean copy of the model just for validation.",
+        },
+      },
+      {
+        title: { pt: "Uma lição de segurança", en: "A security lesson" },
+        text: {
+          pt: "Em algum momento do processo, um token de acesso ao Hugging Face ficou esquecido no código-fonte e acabou sendo commitado pro GitHub. Assim que percebi, revoguei o token na hora, removi o arquivo do histórico do git, e gerei um novo — dessa vez com escopo restrito (fine-grained, não o clássico \"Write\" de acesso total à conta) e mantido fora do código, inserido só através do terminal. Nenhum dado do modelo ou do projeto foi comprometido — foi só um lembrete de que credenciais nunca devem ir junto do código-fonte, mesmo por descuido.",
+          en: "At some point in the process, a Hugging Face access token was left forgotten in the source code and ended up committed to GitHub. As soon as it was noticed, the token was revoked right away, the file was scrubbed from git history, and a new token was generated — this time with a restricted scope (fine-grained, not the classic account-wide \"Write\" token) and kept out of the code entirely, entered only through the terminal. No model or project data was compromised — it was just a reminder that credentials should never travel alongside source code, even by accident.",
+        },
+      },
+      {
+        title: { pt: "Ajustando o design com feedback real", en: "Refining the design with real feedback" },
+        text: {
+          pt: "Boa parte da interface não saiu perfeita de primeira — e tudo bem, foi assim mesmo que devia ser. O pipeline no topo da tela estava apagado demais pra ler em tela de celular no sol, resolvido trocando a opacidade reduzida por um preenchimento sólido no estágio ativo. A matriz de atenção tinha o cabeçalho girado 90 graus, obrigando a virar a cabeça pra ler — virou uma rotação de 45 graus, bem mais legível. As setas dos arcos de atenção (que mostram pra onde cada palavra \"olha\") ficaram malformadas nas primeiras versões, por causa de uma sobreposição feia entre o marcador nativo do SVG e o corte reto de linhas grossas — a solução foi desenhar o triângulo da seta manualmente, alinhado à direção da curva. Cada um desses problemas só apareceu testando de verdade, não só olhando o código.",
+          en: "Much of the interface wasn't perfect on the first try — and that's fine, that's how it was supposed to go. The pipeline at the top of the screen was too faded to read on a phone screen in sunlight, fixed by swapping the reduced opacity for a solid fill on the active stage. The attention matrix had its header rotated 90 degrees, forcing people to tilt their head to read it — that became a 45-degree rotation instead, far more readable. The attention-arc arrowheads came out malformed in earlier versions, because of ugly overlap between the native SVG marker and the flat end-cap of thick lines — the fix was drawing the arrow triangle by hand, aligned to the curve's direction. Every one of these problems only surfaced by actually testing, not just by reading the code.",
+        },
+      },
+      {
+        title: { pt: "Escolhendo exemplos com dados, não achismo", en: "Choosing examples with data, not guesswork" },
+        text: {
+          pt: "As frases de exemplo do site foram escolhidas depois de testar o comportamento real do modelo, não por parecerem boas ideias. Cada frase foi validada rodando inferência direta (probabilidades reais via softmax) antes de entrar no código. Um ditado popular (\"antes tarde do que nunca\") parecia um exemplo óbvio de previsão confiante — mas testando, o modelo só dava 7,7% de chance de completar certo. Já uma frase simples como \"ela mora no Rio de\" teve 100% de confiança na palavra seguinte (\"Janeiro\"). A frase de tokenização foi escolhida porque realmente quebra em subpalavras visíveis (ex: \"impressionadíssima\" → impression/ad/íssima). Só entra no site o que foi medido.",
+          en: "The site's example sentences were picked after testing the model's actual behavior, not because they sounded like good ideas. Each one was validated by running direct inference (real probabilities via softmax) before going into the code. A well-known saying (\"better late than never\") seemed like an obvious confident-prediction example — but tested against the model, it only gave a 7.7% chance of completing it correctly. Meanwhile a plain sentence like \"she lives in Rio de\" got 100% confidence on the next word (\"Janeiro\"). The tokenization example was picked because it genuinely breaks into visible subwords (e.g. \"overjoyed\" → over/joy/ed). Only what was actually measured makes it into the site.",
+        },
+      },
+      {
+        title: { pt: "Limitações conhecidas", en: "Known limitations" },
+        text: {
+          pt: "O projeto ainda tem uma ponta solta, de propósito — não dá pra fingir que está 100% pronto. O \"elevador de camadas\" usa uma técnica de compressão (PCA, calculada no navegador via matriz de Gram) que é uma aproximação visual, não uma explicação \"oficial\" de como o modelo pensa — a posição dos pontos no desenho não corresponde a nenhuma saída nativa do modelo, só ajuda a enxergar semelhança relativa entre tokens.",
+          en: "The project still has one loose end, on purpose — there's no pretending it's 100% finished. The \"layer elevator\" uses a compression technique (PCA, computed in the browser via a Gram matrix) that's a visual approximation, not an \"official\" explanation of how the model thinks — the points' positions in the drawing don't correspond to any native model output, they just help show relative similarity between tokens.",
+        },
+      },
+    ];
+
+    function render() {
+      const t = UI[LANG];
+      document.title = t.title;
+      document.getElementById("back-link").textContent = t.backLink;
+      document.getElementById("page-title").textContent = t.pageTitle;
+      document.getElementById("page-intro").textContent = t.pageIntro;
+
+      const container = document.getElementById("sections");
+      container.innerHTML = "";
+      SECTIONS.forEach((section, i) => {
+        const el = document.createElement("section");
+        el.className = "bastidores-section panel";
+        const head = document.createElement("div");
+        head.className = "section-head";
+        const num = document.createElement("span");
+        num.className = "section-num";
+        num.textContent = i + 1;
+        const h2 = document.createElement("h2");
+        h2.textContent = section.title[LANG];
+        head.append(num, h2);
+        const p = document.createElement("p");
+        p.className = "lesson-text";
+        p.textContent = section.text[LANG];
+        el.append(head, p);
+        container.appendChild(el);
+      });
+
+      const note = document.getElementById("reference-note");
+      note.innerHTML = "";
+      const noteText = document.createTextNode(
+        LANG === "pt"
+          ? "O mecanismo de atenção visualizado neste site vem de "
+          : "The attention mechanism visualized on this site comes from "
+      );
+      const link = document.createElement("a");
+      link.href = "https://arxiv.org/abs/1706.03762";
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = "Vaswani et al., \"Attention Is All You Need\" (2017)";
+      note.append(noteText, link, document.createTextNode(LANG === "pt" ? ", o paper que introduziu a arquitetura Transformer." : ", the paper that introduced the Transformer architecture."));
+    }
+
+    render();
+  </script>
+</body>
+</html>

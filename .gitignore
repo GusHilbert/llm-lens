@@ -19,6 +19,8 @@ dist/
 *.bin
 *.safetensors
 *.pt
+*.onnx
+onnx_model*/
 
 # Sistema
 .DS_Store

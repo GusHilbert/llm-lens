@@ -59,6 +59,7 @@
 
     <div class="links">
       <a href="https://br.linkedin.com/in/gustavhilbert" target="_blank" rel="noopener">🔗 LinkedIn</a>
+      <a href="bastidores.html?lang=pt" id="bastidores-link">🛠️ Bastidores</a>
     </div>
 
     <section>
@@ -87,6 +88,7 @@
     const lang = params.get("lang") === "en" ? "en" : "pt";
     document.getElementById("html-root").lang = lang === "pt" ? "pt-br" : "en";
     document.getElementById("back-link").href = `app.html?lang=${lang}`;
+    document.getElementById("bastidores-link").href = `bastidores.html?lang=${lang}`;
 
     if (lang === "en") {
       document.title = "About — LLM Lens";
@@ -99,6 +101,7 @@
         "model processes and generates text — tokenization, attention, and next-word prediction " +
         "— running entirely in the browser, with no server behind it.";
       document.getElementById("stack-heading").textContent = "Tech stack";
+      document.getElementById("bastidores-link").textContent = "🛠️ Behind the scenes";
     }
   </script>
 </body>

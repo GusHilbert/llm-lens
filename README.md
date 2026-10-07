@@ -15,6 +15,11 @@ e mostra, passo a passo, o que acontece entre você digitar um prompt e o modelo
 4. **Geração passo a passo** — a distribuição de probabilidade completa (top-k) antes de cada
    token ser escolhido, com controle de temperature/top-p, e a opção de escolher manualmente
    um token diferente do mais provável para ver como a frase muda.
+5. **Construa um jogo com a IA** — a pessoa conversa com o modelo e ele "programa" um jogo da
+   cobrinha peça por peça (com bugs de propósito). O modelo não escreve código: ele compara os
+   hidden states do pedido com 100 pedidos de exemplo e dispara o comando mais parecido — o
+   mesmo esqueleto do *tool calling* dos agentes. A calibração (camadas, limiares, taxa de
+   acerto) está em `scripts/calibrar_simulador.py`.
 
 ## Por que isso importa
 
@@ -108,7 +113,11 @@ llm-visualizer/
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
-│   └── script.js
+│   ├── script.js
+│   ├── simulator.js       # Seção 7: jogo, roteador de comandos e chat
+│   └── simulator-data.js  # Exemplos, palavras-chave, trechos de código e textos PT/EN
+├── scripts/
+│   └── calibrar_simulador.py  # Mede a taxa de acerto do roteador com o modelo ONNX local
 ├── requirements.txt
 ├── LICENSE
 └── README.md

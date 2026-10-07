@@ -87,6 +87,44 @@
     .pipeline .stage.active { border-color: var(--signal); background: var(--signal-dim); box-shadow: 0 0 10px rgba(79, 209, 197, 0.35); }
     .pipeline .arrow { color: var(--border); font-size: 0.9rem; }
 
+    /* ---------- Alternador de tipo de modelo (SLM / LLM / Multimodal) ---------- */
+    .model-type-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: -10px auto 16px;
+    }
+    .model-type-btn {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 16px;
+      background: transparent;
+      transition: all 0.15s ease;
+    }
+    .model-type-btn:hover { color: var(--ink); border-color: var(--signal-dim); }
+    .model-type-btn.active {
+      color: var(--void);
+      background: var(--signal);
+      border-color: var(--signal);
+      font-weight: 600;
+    }
+    .model-type-text {
+      max-width: 680px;
+      margin: 0 auto 26px;
+      padding: 14px 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.94rem;
+      line-height: 1.6;
+      color: var(--ink);
+      text-align: left;
+    }
+
     /* ---------- Numeração das seções (badge circular) ---------- */
     .section-num {
       display: inline-flex;
@@ -131,6 +169,14 @@
       color: var(--signal);
       font-size: 0.85rem;
     }
+    #attention-heads-explainer {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: var(--panel-raised);
+      border-left: 2px solid var(--pulse);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.92rem;
+    }
     .insight {
       margin-top: 14px;
       padding: 12px 14px;
@@ -161,10 +207,36 @@
       padding: 4px 8px;
       font-family: var(--font-mono);
     }
+    .head-compare-toggle { font-size: 0.78rem; padding: 6px 12px; }
+    .head-comparison-view { margin: 14px 0; }
+    .head-comparison-grid { display: flex; gap: 36px; flex-wrap: wrap; overflow-x: auto; padding-bottom: 4px; }
+    .head-comparison-item { flex: 0 0 auto; display: flex; flex-direction: column; gap: 14px; }
+    .head-mini-arcs { width: 220px; height: 90px; display: block; }
+    .head-comparison-item h4 {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .head-mini-grid { border-collapse: collapse; }
+    .head-mini-grid td { width: 16px; height: 16px; border: 1px solid var(--border); transition: outline-color 0.15s ease; }
+    .head-mini-grid td.hot-cell-hover { outline: 2px solid var(--pulse); outline-offset: -2px; }
     .attention-view { overflow-x: auto; }
     .attention-grid { border-collapse: collapse; font-family: var(--font-mono); }
     .attention-grid td { width: 34px; height: 34px; text-align: center; border: 1px solid var(--border); font-size: 0.68rem; }
-    .attention-grid th { font-size: 0.68rem; color: var(--muted); padding: 4px; writing-mode: vertical-rl; }
+    .attention-grid th { font-size: 0.68rem; color: var(--muted); padding: 4px; }
+    .attention-grid th.row-label { text-align: right; padding-right: 8px; white-space: nowrap; font-weight: 400; }
+    .attention-grid th.col-header {
+      writing-mode: horizontal-tb;
+      transform: rotate(-40deg);
+      transform-origin: left bottom;
+      white-space: nowrap;
+      text-align: left;
+      height: 56px;
+      vertical-align: bottom;
+    }
     .attention-grid td.hot-cell { outline: 2px solid var(--pulse); outline-offset: -2px; }
 
     /* ---------- Destrinchamento da atenção: pra onde cada token olha ---------- */
@@ -207,6 +279,73 @@
     .breakdown-target-top .breakdown-bar-fill { opacity: 1; box-shadow: 0 0 8px rgba(79, 209, 197, 0.65); }
     .breakdown-target-pct { font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); text-align: right; }
 
+    /* ---------- Arcos de atenção (modo Iniciante) ---------- */
+    .viz-caption {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    .attention-arcs-view { overflow-x: auto; margin-top: 8px; }
+    .attention-arcs-view svg { width: 100%; min-width: 420px; height: 200px; display: block; }
+    .arc-group { opacity: 0.3; transition: opacity 0.15s ease; }
+    .arc-group.pending { opacity: 0; transition: opacity 0.6s ease; }
+    .arc-group.active { opacity: 1; }
+    .arc-line {
+      fill: none;
+      stroke: var(--signal);
+      transition: stroke 0.15s ease;
+    }
+    .arc-arrowhead { fill: var(--signal); transition: fill 0.15s ease; }
+    .arc-group.active .arc-line { stroke: var(--pulse); }
+    .arc-group.active .arc-arrowhead { fill: var(--pulse); }
+    .arc-token {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      fill: var(--ink);
+      cursor: pointer;
+      text-anchor: middle;
+    }
+    .arc-token-dot { fill: var(--signal); cursor: pointer; }
+    .arc-token-dot.active { fill: var(--pulse); }
+
+    /* ---------- Elevador de camadas (hidden states + PCA) ---------- */
+    .hidden-controls { display: flex; gap: 18px; margin: 14px 0; font-size: 0.85rem; color: var(--muted); }
+    .hidden-controls select {
+      background: var(--panel-raised);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+    }
+    .hidden-elevator-view { overflow-x: auto; }
+    .hidden-elevator-view svg { width: 100%; min-width: 420px; height: 320px; display: block; }
+    .elevator-point { fill: var(--signal); stroke: var(--void); stroke-width: 2px; cursor: pointer; }
+    .elevator-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      fill: var(--ink);
+    }
+    .elevator-axis { stroke: var(--border); stroke-width: 1px; }
+    .elevator-distance-line { opacity: 0; transition: opacity 0.15s ease; pointer-events: none; }
+    .elevator-distance-line.visible { opacity: 0.85; }
+    .elevator-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .elevator-legend-bar {
+      width: 90px;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--signal), var(--pulse));
+    }
+
     .next-token-view { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
     .prob-row { display: grid; grid-template-columns: 90px 1fr 56px; align-items: center; gap: 10px; cursor: pointer; font-family: var(--font-mono); font-size: 0.88rem; }
     .prob-bar-bg { background: var(--panel-raised); border-radius: 4px; overflow: hidden; height: 16px; }
@@ -236,6 +375,149 @@
     }
     .suggestion-chip:hover { background: var(--pulse-dim); border-color: var(--pulse); }
     .write-reset { margin-top: 12px; }
+
+    .compare-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+    .compare-label { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); margin-bottom: 6px; }
+    .compare-results { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .compare-result-col { background: var(--panel-raised); border-radius: 10px; padding: 14px; }
+    .compare-result-heading {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--signal);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .compare-tokens { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .compare-insight { font-size: 0.85rem; color: var(--ink); margin-bottom: 12px; }
+
+    @media (max-width: 640px) {
+      .compare-inputs, .compare-results { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Seção 7: Construa um jogo com a IA ---------- */
+    .sim-messages, .sim-code-body, .sim-call { color-scheme: dark; } /* barras de rolagem escuras */
+    .sim-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; margin-top: 18px; align-items: start; }
+    .sim-chat { display: flex; flex-direction: column; min-width: 0; }
+    .sim-messages {
+      height: 440px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+      background: var(--panel-raised);
+      border: 1px solid var(--border);
+      border-radius: 12px 12px 0 0;
+    }
+    .sim-msg { max-width: 92%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5; }
+    .sim-msg p + p { margin-top: 8px; }
+    .sim-msg ul { margin: 6px 0 0; padding-left: 18px; }
+    .sim-msg.user { align-self: flex-end; background: var(--signal-dim); border: 1px solid var(--signal); }
+    .sim-msg.bot { align-self: flex-start; background: var(--panel); border: 1px solid var(--border); }
+    .sim-thinking { color: var(--muted); font-style: italic; animation: sim-blink 1.2s ease-in-out infinite; }
+    @keyframes sim-blink { 50% { opacity: 0.45; } }
+    .sim-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .sim-chips .example-chip:disabled { opacity: 0.45; cursor: default; }
+    .sim-input-row { display: flex; gap: 8px; padding: 10px; background: var(--panel-raised); border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; }
+    .sim-input-row input {
+      flex: 1 1 auto;
+      min-width: 0;
+      background: var(--panel);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+    .sim-input-row input:focus { outline: none; border-color: var(--signal); }
+    .sim-input-row .btn { padding: 10px 16px; }
+    .sim-status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-top: 8px; min-height: 1.2em; }
+
+    .sim-hood { margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 8px; }
+    .sim-hood summary { cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; color: var(--signal); text-transform: uppercase; letter-spacing: 0.06em; }
+    .sim-analysis + .sim-analysis { margin-top: 12px; padding-top: 10px; border-top: 1px dotted var(--border); }
+    .sim-hood-part { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); margin-top: 8px; }
+    .sim-hood-label { font-size: 0.78rem; color: var(--muted); margin: 10px 0 6px; }
+    .sim-hood-note { font-size: 0.78rem; color: var(--muted); margin-top: 8px; font-style: italic; }
+    .sim-tokens { display: flex; flex-wrap: wrap; gap: 4px; }
+    .sim-token { font-family: var(--font-mono); font-size: 0.74rem; padding: 2px 6px; border-radius: 4px; background: var(--signal-dim); border: 1px solid var(--signal); white-space: pre; }
+    #sim-lesson { white-space: pre-line; }
+    #sim-insight { margin-top: 18px; }
+    .sim-score-row { display: grid; grid-template-columns: 140px 1fr minmax(24px, auto); align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; margin-bottom: 4px; }
+    .sim-score-row .prob-bar-bg { height: 10px; }
+    .sim-score-row .prob-bar-fill { opacity: 0.45; }
+    .sim-score-row.chosen .prob-bar-fill { opacity: 1; background: var(--pulse); }
+    .sim-score-row.chosen .sim-score-label { color: var(--ink); font-weight: 600; }
+    .sim-score-label { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sim-score-val { text-align: right; color: var(--muted); white-space: nowrap; }
+    .sim-call { display: block; font-family: var(--font-mono); font-size: 0.76rem; background: var(--void); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; color: var(--pulse); overflow-x: auto; }
+    #section-sim:not(.sim-tech) .tech-only { display: none !important; }
+    #section-sim.sim-tech .simple-only { display: none !important; }
+
+    .sim-game-col { display: flex; flex-direction: column; gap: 12px; }
+    .sim-game {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #050505;
+      cursor: pointer;
+      touch-action: none;
+    }
+    .sim-game:focus { outline: none; border-color: var(--signal); box-shadow: 0 0 0 1px var(--signal); }
+    .sim-game canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .sim-hud {
+      position: absolute; top: 8px; left: 10px;
+      font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink);
+      background: rgba(10, 14, 20, 0.7); border-radius: 6px; padding: 2px 8px;
+    }
+    .sim-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      text-align: center; padding: 20px; pointer-events: none;
+      font-family: var(--font-mono); color: var(--ink);
+    }
+    .sim-overlay.dim { background: rgba(10, 14, 20, 0.66); }
+    .sim-overlay strong { font-family: var(--font-display); font-size: 1.05rem; }
+    .sim-overlay span { font-size: 0.78rem; color: var(--muted); }
+    .sim-toast {
+      position: absolute; left: 50%; bottom: 12px; transform: translate(-50%, 8px);
+      width: max-content; max-width: 90%;
+      font-size: 0.78rem; background: var(--panel); border: 1px solid var(--pulse); color: var(--ink);
+      border-radius: 8px; padding: 6px 10px; opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none;
+    }
+    .sim-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .sim-dpad { display: none; grid-template-columns: repeat(3, 48px); grid-template-areas: ". up ." "left pause right" ". down ."; gap: 6px; justify-content: center; }
+    .sim-dpad button { height: 44px; background: var(--panel-raised); border: 1px solid var(--border); color: var(--ink); border-radius: 10px; font-size: 1.1rem; }
+    .sim-dpad-up { grid-area: up; } .sim-dpad-left { grid-area: left; } .sim-dpad-pause { grid-area: pause; }
+    .sim-dpad-right { grid-area: right; } .sim-dpad-down { grid-area: down; }
+    @media (hover: none) { .sim-dpad { display: grid; } }
+    .sim-versions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .sim-versions-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .sim-versions-list { display: flex; flex-wrap: wrap; gap: 4px; }
+    .sim-version { font-family: var(--font-mono); font-size: 0.74rem; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); }
+    .sim-version:hover { color: var(--ink); border-color: var(--signal-dim); }
+    .sim-version.active { color: var(--void); background: var(--signal); border-color: var(--signal); font-weight: 600; }
+
+    .sim-code { margin-top: 20px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--void); }
+    .sim-code-head { display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: var(--panel-raised); border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); }
+    .sim-code-dots { display: flex; gap: 5px; }
+    .sim-code-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+    .sim-code-body { max-height: 300px; overflow: auto; padding: 10px 0; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.55; }
+    .sim-code-body.empty { padding: 18px 14px; color: var(--muted); font-style: italic; }
+    .sim-code-line { white-space: pre; padding: 0 14px; color: var(--muted); }
+    .sim-code-line.add { color: var(--signal); background: rgba(79, 209, 197, 0.07); }
+    .sim-code-line.del { color: #E07A7A; background: rgba(224, 122, 122, 0.08); text-decoration: line-through; text-decoration-color: rgba(224, 122, 122, 0.4); }
+
+    @media (max-width: 780px) {
+      .sim-layout { grid-template-columns: 1fr; }
+      .sim-game-col { max-width: 400px; width: 100%; margin: 0 auto; }
+      .sim-messages { height: 360px; }
+    }
 
     footer.app-footer {
       position: relative; z-index: 1;
@@ -335,6 +617,7 @@
       .breakdown-row { flex-direction: column; align-items: flex-start; gap: 6px; }
       .breakdown-source { width: auto; }
       .breakdown-target { grid-template-columns: 56px 1fr 38px; }
+      .hidden-controls { flex-direction: column; gap: 10px; }
     }
   </style>
 </head>
@@ -370,6 +653,7 @@
         <a href="#" id="lang-en">🌐 EN</a>
       </nav>
       <a href="sobre.html?lang=pt" id="sobre-link" class="hint">Sobre</a>
+      <a href="bastidores.html?lang=pt" id="bastidores-link" class="hint">Bastidores</a>
     </div>
   </header>
 
@@ -381,6 +665,7 @@
       <p class="role" id="about-role">TCC — Pós-Graduação em Inteligência Artificial Generativa &amp; LLMs, PUC-Rio / Laboratório ICA</p>
       <div class="about-links">
         <a href="https://br.linkedin.com/in/gustavhilbert" target="_blank" rel="noopener">🔗 LinkedIn</a>
+        <a href="bastidores.html?lang=pt" id="about-bastidores-link">🛠️ Bastidores</a>
       </div>
       <section>
         <h3 id="about-project-heading">Sobre o projeto</h3>
@@ -404,13 +689,14 @@
   </div>
 
   <main class="wrap">
-    <div class="pipeline" id="pipeline">
-      <span class="stage" data-stage="text">Texto</span><span class="arrow">→</span>
-      <span class="stage" data-stage="token">Token</span><span class="arrow">→</span>
-      <span class="stage" data-stage="embedding">Embedding</span><span class="arrow">→</span>
-      <span class="stage" data-stage="attention">Atenção</span><span class="arrow">→</span>
-      <span class="stage" data-stage="prediction">Previsão</span>
+    <div class="pipeline" id="pipeline"></div>
+
+    <div class="model-type-toggle" id="model-type-toggle">
+      <button class="model-type-btn active" data-type="slm" id="model-type-btn-slm"></button>
+      <button class="model-type-btn" data-type="llm" id="model-type-btn-llm"></button>
+      <button class="model-type-btn" data-type="multimodal" id="model-type-btn-multimodal"></button>
     </div>
+    <p class="model-type-text" id="model-type-text"></p>
 
     <div class="panel input-panel">
       <p class="eyebrow" id="input-eyebrow">DIGITE UMA FRASE</p>
@@ -434,22 +720,55 @@
         <div class="section-head"><span class="section-num">2</span><h2 id="attention-title">Atenção</h2></div>
         <p class="hint" id="attention-hint">Escolha uma camada e uma cabeça para ver para onde cada token "olha".</p>
         <p class="lesson-text" id="attention-lesson"></p>
+        <p class="lesson-text" id="attention-heads-explainer"></p>
         <div class="attention-controls">
           <label><span id="layer-label">Camada</span>: <select id="layer-select"></select></label>
-          <label><span id="head-label">Cabeça</span>: <select id="head-select"></select></label>
+          <label id="head-select-label"><span id="head-label">Cabeça</span>: <select id="head-select"></select></label>
+          <button class="btn btn-ghost head-compare-toggle" id="head-compare-toggle">Comparar cabeças</button>
         </div>
-        <div class="attention-view"><div id="attention-view"></div></div>
+        <div class="head-comparison-view" id="head-comparison-view" style="display:none">
+          <p class="viz-caption" id="head-comparison-caption"></p>
+          <div class="head-comparison-grid" id="head-comparison-grid"></div>
+        </div>
+        <div class="attention-arcs-view" id="attention-arcs-view" style="display:none">
+          <p class="viz-caption" id="attention-arcs-caption"></p>
+          <svg id="attention-arcs-svg" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="attention-technical-view" id="attention-technical-view">
+          <div class="attention-view"><div id="attention-view"></div></div>
+          <div class="attention-breakdown">
+            <p class="attention-breakdown-title" id="attention-breakdown-title"></p>
+            <div id="attention-breakdown"></div>
+          </div>
+        </div>
         <div class="insight" id="attention-insight"></div>
-        <div class="attention-breakdown">
-          <p class="attention-breakdown-title" id="attention-breakdown-title"></p>
-          <div id="attention-breakdown"></div>
+      </div>
+    </section>
+
+    <section class="lesson reveal" id="section-hidden" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">3</span><h2 id="hidden-title">Camadas ocultas</h2></div>
+        <p class="hint" id="hidden-hint">Escolha uma camada para ver como o modelo reposiciona cada token internamente.</p>
+        <p class="lesson-text" id="hidden-lesson"></p>
+        <div class="hidden-controls">
+          <label><span id="hidden-layer-label">Camada</span>: <select id="hidden-layer-select"></select></label>
         </div>
+        <div class="hidden-elevator-view">
+          <p class="viz-caption" id="hidden-elevator-caption"></p>
+          <svg id="hidden-elevator-svg" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="elevator-legend">
+            <span id="elevator-legend-near">mais parecido</span>
+            <span class="elevator-legend-bar"></span>
+            <span id="elevator-legend-far">mais diferente</span>
+          </div>
+        </div>
+        <div class="insight" id="hidden-insight"></div>
       </div>
     </section>
 
     <section class="lesson reveal" id="section-next" style="display:none">
       <div class="panel">
-        <div class="section-head"><span class="section-num">3</span><h2 id="next-title">Próxima palavra</h2></div>
+        <div class="section-head"><span class="section-num">4</span><h2 id="next-title">Próxima palavra</h2></div>
         <p class="hint" id="next-hint">A distribuição de probabilidade que o modelo calculou para a próxima palavra.</p>
         <p class="lesson-text" id="next-lesson"></p>
         <div class="next-token-view" id="next-token-view"></div>
@@ -459,7 +778,7 @@
 
     <section class="lesson reveal" id="section-write" style="display:none">
       <div class="panel">
-        <div class="section-head"><span class="section-num">4</span><h2 id="write-title">Escreva junto com o modelo</h2></div>
+        <div class="section-head"><span class="section-num">5</span><h2 id="write-title">Escreva junto com o modelo</h2></div>
         <p class="hint" id="write-hint">Continue uma frase e deixe o modelo sugerir a próxima palavra, uma de cada vez.</p>
         <p class="lesson-text" id="write-lesson"></p>
         <textarea id="write-input" rows="1">Era uma vez</textarea>
@@ -467,6 +786,71 @@
         <div class="write-output" id="write-output" style="display:none"></div>
         <div class="write-suggestions" id="write-suggestions"></div>
         <button class="btn btn-ghost write-reset" id="write-reset-btn" style="display:none">Recomeçar</button>
+      </div>
+    </section>
+
+    <section class="lesson reveal" id="section-compare" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">6</span><h2 id="compare-title">Comparar frases</h2></div>
+        <p class="hint" id="compare-hint">Veja como pequenas mudanças na frase alteram o que o modelo "enxerga".</p>
+        <p class="lesson-text" id="compare-lesson"></p>
+        <div class="compare-inputs">
+          <div class="compare-input-col">
+            <p class="compare-label" id="compare-label-a">Frase A</p>
+            <textarea id="compare-input-a" rows="2">Maria ajudou João</textarea>
+          </div>
+          <div class="compare-input-col">
+            <p class="compare-label" id="compare-label-b">Frase B</p>
+            <textarea id="compare-input-b" rows="2">João ajudou Maria</textarea>
+          </div>
+        </div>
+        <button class="btn" id="compare-btn">Comparar</button>
+        <div class="compare-results" id="compare-results" style="display:none">
+          <div class="compare-result-col" id="compare-result-a"></div>
+          <div class="compare-result-col" id="compare-result-b"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lesson reveal" id="section-sim" style="display:none">
+      <div class="panel">
+        <div class="section-head"><span class="section-num">7</span><h2 id="sim-title">Construa um jogo com a IA</h2></div>
+        <p class="hint" id="sim-hint"></p>
+        <p class="lesson-text" id="sim-lesson"></p>
+        <div class="sim-layout">
+          <div class="sim-chat">
+            <div class="sim-messages" id="sim-messages" aria-live="polite"></div>
+            <form class="sim-input-row" id="sim-form">
+              <input id="sim-input" type="text" autocomplete="off" />
+              <button class="btn" id="sim-send" type="submit">Enviar</button>
+            </form>
+            <p class="sim-status" id="sim-status"></p>
+          </div>
+          <div class="sim-game-col">
+            <div class="sim-game" id="sim-game" tabindex="0">
+              <canvas id="sim-canvas"></canvas>
+              <div class="sim-hud" id="sim-hud"></div>
+              <div class="sim-overlay" id="sim-overlay"></div>
+              <div class="sim-toast" id="sim-toast"></div>
+            </div>
+            <div class="sim-dpad" id="sim-dpad">
+              <button type="button" class="sim-dpad-up" data-dir="0,-1" aria-label="↑">↑</button>
+              <button type="button" class="sim-dpad-left" data-dir="-1,0" aria-label="←">←</button>
+              <button type="button" class="sim-dpad-pause" id="sim-pause-btn" aria-label="⏸">⏸</button>
+              <button type="button" class="sim-dpad-right" data-dir="1,0" aria-label="→">→</button>
+              <button type="button" class="sim-dpad-down" data-dir="0,1" aria-label="↓">↓</button>
+            </div>
+            <div class="sim-versions">
+              <span class="sim-versions-label" id="sim-versions-label"></span>
+              <div class="sim-versions-list" id="sim-versions"></div>
+            </div>
+          </div>
+        </div>
+        <div class="insight" id="sim-insight" style="display:none"></div>
+        <div class="sim-code">
+          <div class="sim-code-head"><span class="sim-code-dots"><i></i><i></i><i></i></span><span id="sim-code-title">game.js</span></div>
+          <div class="sim-code-body" id="sim-code"></div>
+        </div>
       </div>
     </section>
   </main>
