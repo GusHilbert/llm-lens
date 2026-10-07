@@ -93,16 +93,6 @@ anterior (ex: `"seu-usuario/gpt2-small-portuguese-onnx"`).
 Pronto: site público, gratuito para sempre, sem servidor, escalando pra qualquer
 quantidade de visitantes sem gargalo — cada um roda o modelo na própria máquina.
 
-## Roadmap acadêmico (seções sugeridas do TCC)
-
-- [x] MVP: tokenização + atenção + geração passo a passo
-- [ ] Comparação entre tamanhos de modelo (0.5B vs 7B) no mesmo prompt
-- [ ] Estudo de caso com frases ambíguas em português (resolução de correferência)
-- [ ] (Avançado) Treinar um mini-modelo do zero (estilo nanoGPT) e comparar a atenção
-      entre época 1 e época N do treinamento
-- [ ] Avaliação de usabilidade: teste A/B medindo se a ferramenta melhora a compreensão
-      de conceitos de Transformers em usuários iniciantes
-
 ## Estrutura do repositório
 
 ```
