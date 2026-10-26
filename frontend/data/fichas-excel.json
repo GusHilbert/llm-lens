@@ -153,8 +153,7 @@
       "id": "texto_funcao",
       "categoria": "texto",
       "titulo": "Formatar números e datas como texto com TEXTO",
-      "texto": "A função TEXTO converte um número ou uma data em texto com o formato desejado. Exemplo: =TEXTO(A2;\"dd/mm/aaaa\") mostra a data no formato brasileiro e =\"Total: \"&TEXTO(B2;\"R$ #.##0,00\") monta uma frase com o valor em reais. O resultado é texto, então não serve mais para cálculos.",
-      "verificar": "Confirmar os códigos de formato \"dd/mm/aaaa\" e \"R$ #.##0,00\" no Excel em português."
+      "texto": "A função TEXTO converte um número ou uma data em texto com o formato desejado. Exemplo: =TEXTO(A2;\"dd/mm/aaaa\") mostra a data no formato brasileiro e =\"Total: \"&TEXTO(B2;\"R$ #.##0,00\") monta uma frase com o valor em reais. O resultado é texto, então não serve mais para cálculos."
     },
     {
       "id": "hoje_agora",
@@ -286,8 +285,7 @@
       "id": "erro_despejar",
       "categoria": "erros",
       "titulo": "Erro #DESPEJAR!",
-      "texto": "O erro #DESPEJAR! aparece quando uma fórmula de matriz dinâmica, como FILTRO, ÚNICO ou CLASSIFICAR, precisa espalhar o resultado por várias células, mas alguma delas já está ocupada. Para resolver, limpe as células que estão no caminho do resultado.",
-      "verificar": "Confirmar se o nome do erro de despejo (#SPILL! em inglês) é #DESPEJAR! no Excel em português."
+      "texto": "O erro #DESPEJAR! aparece quando uma fórmula de matriz dinâmica, como FILTRO, ÚNICO ou CLASSIFICAR, precisa espalhar o resultado por várias células, mas alguma delas já está ocupada. Para resolver, limpe as células que estão no caminho do resultado."
     },
     {
       "id": "numero_texto",
