@@ -105,9 +105,15 @@ llm-visualizer/
 │   ├── style.css
 │   ├── script.js
 │   ├── simulator.js       # Seção 7: jogo, roteador de comandos e chat
-│   └── simulator-data.js  # Exemplos, palavras-chave, trechos de código e textos PT/EN
+│   ├── simulator-data.js  # Exemplos, palavras-chave, trechos de código e textos PT/EN
+│   └── data/
+│       └── fichas-excel.json  # Base de conhecimento sobre Excel (RAG e fine-tuning)
+├── avaliacao/
+│   ├── README.md                  # Protocolo do experimento RAG × fine-tuning
+│   └── perguntas-teste-excel.json # Conjunto de teste (fora do treino)
 ├── scripts/
-│   └── calibrar_simulador.py  # Mede a taxa de acerto do roteador com o modelo ONNX local
+│   ├── calibrar_simulador.py  # Mede a taxa de acerto do roteador com o modelo ONNX local
+│   └── validar_dados_excel.py # Confere as fichas e as perguntas de teste
 ├── requirements.txt
 ├── LICENSE
 └── README.md

@@ -1,0 +1,413 @@
+{
+  "versao": 1,
+  "idioma": "pt-BR",
+  "descricao": "Base de conhecimento sobre Excel (em português do Brasil) usada pela seção de RAG (como documentos recuperáveis) e pelo fine-tuning (como texto de treino). Fichas com \"cenario\": \"atualizacao\" ficam FORA do fine-tuning e entram só no RAG, simulando um conhecimento que surgiu depois do treino. Campo \"verificar\": detalhe a confirmar num Excel em português antes de usar no experimento.",
+  "fichas": [
+    {
+      "id": "soma",
+      "categoria": "funcoes-basicas",
+      "titulo": "Somar valores com SOMA",
+      "texto": "A função SOMA adiciona todos os números de um intervalo de células. Exemplo: =SOMA(B2:B20) soma os valores de B2 até B20. Para somar uma coluna rapidamente, selecione a célula vazia logo abaixo dos números e clique em AutoSoma, na guia Página Inicial, ou use o atalho Alt+=.",
+      "verificar": "Confirmar se o atalho Alt+= insere a AutoSoma no Excel em português."
+    },
+    {
+      "id": "media",
+      "categoria": "funcoes-basicas",
+      "titulo": "Calcular a média com MÉDIA",
+      "texto": "A função MÉDIA calcula a média aritmética de um intervalo. Exemplo: =MÉDIA(C2:C50) devolve a média dos valores de C2 até C50. Células vazias e células com texto são ignoradas, mas células com o número zero entram no cálculo e puxam a média para baixo."
+    },
+    {
+      "id": "maximo_minimo",
+      "categoria": "funcoes-basicas",
+      "titulo": "Maior e menor valor com MÁXIMO e MÍNIMO",
+      "texto": "As funções MÁXIMO e MÍNIMO devolvem o maior e o menor número de um intervalo. Exemplo: =MÁXIMO(D2:D100) mostra a maior venda da lista e =MÍNIMO(D2:D100) mostra a menor. Para encontrar o segundo ou o terceiro maior valor, use =MAIOR(D2:D100;2) ou =MAIOR(D2:D100;3)."
+    },
+    {
+      "id": "contagem",
+      "categoria": "funcoes-basicas",
+      "titulo": "Contar células com CONT.NÚM, CONT.VALORES e CONTAR.VAZIO",
+      "texto": "Para contar células, o Excel tem três funções básicas. CONT.NÚM conta apenas as células que contêm números. CONT.VALORES conta todas as células que não estão vazias, inclusive as que têm texto. CONTAR.VAZIO conta as células vazias. Exemplo: =CONT.VALORES(A2:A500) mostra quantas linhas da coluna A estão preenchidas."
+    },
+    {
+      "id": "cont_se",
+      "categoria": "condicionais",
+      "titulo": "Contar com um critério usando CONT.SE",
+      "texto": "A função CONT.SE conta quantas células de um intervalo atendem a um critério. Exemplo: =CONT.SE(D2:D100;\"Aprovado\") conta quantas vezes a palavra Aprovado aparece na coluna D. O critério também pode ser uma comparação entre aspas, como =CONT.SE(E2:E100;\">1000\") para contar os valores acima de mil."
+    },
+    {
+      "id": "cont_ses",
+      "categoria": "condicionais",
+      "titulo": "Contar com várias condições usando CONT.SES",
+      "texto": "A função CONT.SES conta as linhas que atendem a várias condições ao mesmo tempo. Os argumentos vêm em pares de intervalo e critério. Exemplo: =CONT.SES(A2:A100;\"Sul\";C2:C100;\"Pago\") conta quantos pedidos são da região Sul e estão com status Pago."
+    },
+    {
+      "id": "somase",
+      "categoria": "condicionais",
+      "titulo": "Somar com um critério usando SOMASE",
+      "texto": "A função SOMASE soma apenas os valores que atendem a um critério. A ordem dos argumentos é: o intervalo onde está o critério, o critério e o intervalo a ser somado. Exemplo: =SOMASE(A2:A100;\"Sul\";C2:C100) soma as vendas da coluna C somente nas linhas em que a região, na coluna A, é Sul."
+    },
+    {
+      "id": "somases",
+      "categoria": "condicionais",
+      "titulo": "Somar com várias condições usando SOMASES",
+      "texto": "A função SOMASES soma valores usando várias condições. Atenção à ordem: diferente da SOMASE, o primeiro argumento é o intervalo a ser somado, seguido dos pares de intervalo e critério. Exemplo: =SOMASES(C2:C100;A2:A100;\"Sul\";B2:B100;\"Janeiro\") soma as vendas da região Sul no mês de janeiro."
+    },
+    {
+      "id": "mediase",
+      "categoria": "condicionais",
+      "titulo": "Média com critério usando MÉDIASE",
+      "texto": "A função MÉDIASE calcula a média apenas dos valores que atendem a um critério. Exemplo: =MÉDIASE(A2:A100;\"Sul\";C2:C100) calcula o ticket médio das vendas da região Sul. Para várias condições, use MÉDIASES, que segue a mesma lógica da SOMASES."
+    },
+    {
+      "id": "se",
+      "categoria": "condicionais",
+      "titulo": "Testar uma condição com SE",
+      "texto": "A função SE testa uma condição e devolve um resultado se ela for verdadeira e outro se for falsa. A estrutura é =SE(teste_lógico;valor_se_verdadeiro;valor_se_falso). Exemplo: =SE(B2>=7;\"Aprovado\";\"Reprovado\") mostra Aprovado quando a nota em B2 for maior ou igual a 7."
+    },
+    {
+      "id": "e_ou",
+      "categoria": "condicionais",
+      "titulo": "Combinar condições com E e OU",
+      "texto": "As funções E e OU combinam várias condições dentro de um SE. E só é verdadeira quando todas as condições são verdadeiras; OU é verdadeira quando pelo menos uma delas é. Exemplo: =SE(E(B2>=7;C2>=75%);\"Aprovado\";\"Reprovado\") exige nota mínima 7 e frequência mínima de 75%."
+    },
+    {
+      "id": "ses",
+      "categoria": "condicionais",
+      "titulo": "Várias condições em sequência com SES",
+      "texto": "A função SES testa várias condições em sequência e devolve o resultado da primeira que for verdadeira, evitando vários SE aninhados. Exemplo: =SES(B2>=9;\"A\";B2>=7;\"B\";B2>=5;\"C\";VERDADEIRO;\"D\") atribui um conceito para a nota. Está disponível a partir do Excel 2019 e no Microsoft 365."
+    },
+    {
+      "id": "seerro",
+      "categoria": "erros",
+      "titulo": "Tratar erros com SEERRO",
+      "texto": "A função SEERRO substitui qualquer erro de uma fórmula por um valor escolhido. Exemplo: =SEERRO(A2/B2;0) mostra zero em vez de #DIV/0!, e =SEERRO(PROCV(F2;A:C;3;FALSO);\"Não encontrado\") mostra uma mensagem amigável quando a busca falha. Para tratar apenas o erro #N/D, existe a função SENÃODISP."
+    },
+    {
+      "id": "procv",
+      "categoria": "busca",
+      "titulo": "Buscar valores com PROCV",
+      "texto": "A função PROCV procura um valor na primeira coluna de uma tabela e devolve um dado de outra coluna da mesma linha. A estrutura é =PROCV(valor_procurado;tabela;número_da_coluna;FALSO). Exemplo: =PROCV(F2;A2:C500;3;FALSO) busca o código em F2 e devolve o preço da terceira coluna. Use FALSO para correspondência exata. A limitação é que ela só busca na primeira coluna e só devolve colunas à direita."
+    },
+    {
+      "id": "procx",
+      "categoria": "busca",
+      "cenario": "atualizacao",
+      "titulo": "PROCX, o sucessor do PROCV",
+      "texto": "A função PROCX é a sucessora do PROCV e do PROCH nas versões mais novas do Excel (Microsoft 365, Excel 2021 e Excel na Web). Ela busca em qualquer direção, usa correspondência exata por padrão e permite definir o que mostrar quando não encontra o valor. Exemplo: =PROCX(F2;A2:A500;C2:C500;\"Não encontrado\") busca o código de F2 na coluna A e devolve o preço da coluna C."
+    },
+    {
+      "id": "proch",
+      "categoria": "busca",
+      "titulo": "Buscar na horizontal com PROCH",
+      "texto": "A função PROCH funciona como o PROCV, mas na horizontal: procura um valor na primeira linha de uma tabela e devolve um dado de outra linha da mesma coluna. Exemplo: =PROCH(\"Março\";B1:M5;3;FALSO) procura Março no cabeçalho e devolve o valor da terceira linha. É útil quando os meses ou categorias estão dispostos em colunas."
+    },
+    {
+      "id": "indice_corresp",
+      "categoria": "busca",
+      "titulo": "Buscar com ÍNDICE e CORRESP",
+      "texto": "A combinação de ÍNDICE com CORRESP é uma alternativa flexível ao PROCV. CORRESP devolve a posição de um item numa lista e ÍNDICE devolve o valor que está numa determinada posição. Exemplo: =ÍNDICE(C2:C500;CORRESP(F2;A2:A500;0)) busca F2 na coluna A e devolve o valor correspondente da coluna C. O zero em CORRESP indica correspondência exata."
+    },
+    {
+      "id": "concatenar",
+      "categoria": "texto",
+      "titulo": "Juntar textos com &, CONCAT e UNIRTEXTO",
+      "texto": "Para juntar textos de várias células, use o operador & ou a função CONCAT. Exemplo: =A2&\" \"&B2 junta nome e sobrenome com um espaço no meio. A função UNIRTEXTO junta vários textos com um separador e pode ignorar células vazias: =UNIRTEXTO(\", \";VERDADEIRO;A2:A10) cria uma lista separada por vírgulas. A antiga CONCATENAR ainda funciona, mas CONCAT é a versão atual."
+    },
+    {
+      "id": "esquerda_direita",
+      "categoria": "texto",
+      "titulo": "Extrair partes do texto com ESQUERDA, DIREITA e EXT.TEXTO",
+      "texto": "As funções ESQUERDA, DIREITA e EXT.TEXTO extraem partes de um texto. =ESQUERDA(A2;3) pega os três primeiros caracteres, =DIREITA(A2;4) pega os quatro últimos e =EXT.TEXTO(A2;5;2) pega dois caracteres a partir da quinta posição. São úteis para separar códigos, como o prefixo de um número de pedido."
+    },
+    {
+      "id": "num_caract",
+      "categoria": "texto",
+      "titulo": "Contar caracteres com NÚM.CARACT",
+      "texto": "A função NÚM.CARACT conta quantos caracteres um texto tem, incluindo espaços e pontuação. Exemplo: =NÚM.CARACT(A2) devolve 14 quando A2 contém um CPF digitado com pontos e traço, como 123.456.789-00. É útil para conferir se códigos e documentos foram digitados com o tamanho certo."
+    },
+    {
+      "id": "arrumar",
+      "categoria": "texto",
+      "titulo": "Remover espaços extras com ARRUMAR",
+      "texto": "A função ARRUMAR remove espaços extras de um texto: tira os espaços do começo e do fim e deixa apenas um espaço entre as palavras. Exemplo: =ARRUMAR(A2). É muito usada para limpar dados importados de outros sistemas, porque um espaço invisível no final de um código faz o PROCV não encontrar o valor."
+    },
+    {
+      "id": "maiuscula",
+      "categoria": "texto",
+      "titulo": "Mudar a caixa do texto com MAIÚSCULA, MINÚSCULA e PRI.MAIÚSCULA",
+      "texto": "As funções MAIÚSCULA, MINÚSCULA e PRI.MAIÚSCULA mudam a caixa do texto. =MAIÚSCULA(A2) deixa tudo em letras maiúsculas, =MINÚSCULA(A2) deixa tudo em minúsculas e =PRI.MAIÚSCULA(A2) coloca a primeira letra de cada palavra em maiúscula, o que ajuda a padronizar nomes de clientes."
+    },
+    {
+      "id": "substituir",
+      "categoria": "texto",
+      "titulo": "Trocar trechos de texto com SUBSTITUIR",
+      "texto": "A função SUBSTITUIR troca um trecho de texto por outro dentro de uma célula. A estrutura é =SUBSTITUIR(texto;texto_antigo;novo_texto). Exemplo: =SUBSTITUIR(A2;\".\";\"\") remove todos os pontos de um CPF. Para substituir em várias células de uma vez, sem fórmula, use Localizar e Substituir, com o atalho Ctrl+U.",
+      "verificar": "Confirmar se Ctrl+U abre Localizar e Substituir no Excel em português."
+    },
+    {
+      "id": "texto_funcao",
+      "categoria": "texto",
+      "titulo": "Formatar números e datas como texto com TEXTO",
+      "texto": "A função TEXTO converte um número ou uma data em texto com o formato desejado. Exemplo: =TEXTO(A2;\"dd/mm/aaaa\") mostra a data no formato brasileiro e =\"Total: \"&TEXTO(B2;\"R$ #.##0,00\") monta uma frase com o valor em reais. O resultado é texto, então não serve mais para cálculos.",
+      "verificar": "Confirmar os códigos de formato \"dd/mm/aaaa\" e \"R$ #.##0,00\" no Excel em português."
+    },
+    {
+      "id": "hoje_agora",
+      "categoria": "datas",
+      "titulo": "Data e hora atuais com HOJE e AGORA",
+      "texto": "A função HOJE devolve a data atual e a função AGORA devolve a data e a hora atuais. Elas não têm argumentos: =HOJE() e =AGORA(). As duas se atualizam sempre que a planilha é recalculada. Para inserir a data de hoje como um valor fixo, que não muda depois, use o atalho Ctrl+; (ponto e vírgula).",
+      "verificar": "Confirmar o atalho Ctrl+; para inserir a data atual no Excel em português."
+    },
+    {
+      "id": "datas_partes",
+      "categoria": "datas",
+      "titulo": "Trabalhar com partes de datas: DIA, MÊS, ANO e DATA",
+      "texto": "As funções DIA, MÊS e ANO extraem partes de uma data: =ANO(A2) devolve o ano da data em A2. A função DATA faz o caminho inverso e monta uma data a partir do ano, do mês e do dia: =DATA(2025;12;31). No Excel, datas são números de série, por isso é possível subtrair duas datas para saber quantos dias se passaram entre elas."
+    },
+    {
+      "id": "datadif",
+      "categoria": "datas",
+      "titulo": "Idade e tempo de casa com DATADIF",
+      "texto": "A função DATADIF calcula a diferença entre duas datas em anos, meses ou dias completos. Exemplo: =DATADIF(A2;HOJE();\"Y\") calcula a idade de uma pessoa ou o tempo de casa de um funcionário em anos. Ela não aparece na lista de sugestões ao digitar, mas funciona normalmente. Para meses use \"M\" e para dias use \"D\".",
+      "verificar": "Confirmar se as unidades continuam \"Y\", \"M\" e \"D\" (em inglês) no Excel em português."
+    },
+    {
+      "id": "diatrabalhototal",
+      "categoria": "datas",
+      "titulo": "Contar dias úteis com DIATRABALHOTOTAL",
+      "texto": "A função DIATRABALHOTOTAL conta os dias úteis entre duas datas, descontando sábados, domingos e, opcionalmente, uma lista de feriados. Exemplo: =DIATRABALHOTOTAL(A2;B2;Feriados!A2:A15) calcula o prazo útil de um projeto. Para descobrir a data final somando dias úteis a uma data, use a função DIATRABALHO."
+    },
+    {
+      "id": "fimmes",
+      "categoria": "datas",
+      "titulo": "Último dia do mês com FIMMÊS",
+      "texto": "A função FIMMÊS devolve o último dia do mês, alguns meses antes ou depois de uma data. Exemplo: =FIMMÊS(A2;0) mostra o último dia do mesmo mês de A2 e =FIMMÊS(A2;1) mostra o último dia do mês seguinte. É útil para calcular datas de vencimento e de fechamento mensal."
+    },
+    {
+      "id": "arred",
+      "categoria": "numeros",
+      "titulo": "Arredondar com ARRED",
+      "texto": "A função ARRED arredonda um número para a quantidade de casas decimais indicada. Exemplo: =ARRED(A2;2) arredonda para duas casas. ARREDONDAR.PARA.CIMA e ARREDONDAR.PARA.BAIXO forçam a direção do arredondamento. Atenção: mudar o formato da célula só altera o que aparece na tela, enquanto ARRED muda o valor usado nos cálculos."
+    },
+    {
+      "id": "somarproduto",
+      "categoria": "numeros",
+      "titulo": "Multiplicar e somar com SOMARPRODUTO",
+      "texto": "A função SOMARPRODUTO multiplica os itens correspondentes de dois ou mais intervalos e soma os resultados. Exemplo: =SOMARPRODUTO(B2:B50;C2:C50) multiplica a quantidade pelo preço de cada linha e devolve o faturamento total em uma única fórmula, sem precisar de uma coluna auxiliar."
+    },
+    {
+      "id": "subtotal",
+      "categoria": "numeros",
+      "titulo": "Somar só as linhas visíveis com SUBTOTAL",
+      "texto": "A função SUBTOTAL calcula considerando apenas as linhas visíveis depois de aplicar um filtro. O primeiro argumento define a operação: 9 para soma, 1 para média e 3 para contagem de valores. Exemplo: =SUBTOTAL(9;C2:C500) soma só as vendas que aparecem na tela depois de filtrar. Use 109 para ignorar também as linhas ocultadas manualmente."
+    },
+    {
+      "id": "aleatorioentre",
+      "categoria": "numeros",
+      "titulo": "Números aleatórios com ALEATÓRIOENTRE",
+      "texto": "A função ALEATÓRIOENTRE gera um número inteiro aleatório entre um mínimo e um máximo. Exemplo: =ALEATÓRIOENTRE(1;100). O número muda toda vez que a planilha recalcula. É útil para criar dados de teste ou fazer sorteios simples; para fixar o resultado, copie a célula e cole somente os valores."
+    },
+    {
+      "id": "pgto",
+      "categoria": "numeros",
+      "titulo": "Calcular parcelas com PGTO",
+      "texto": "A função PGTO calcula o valor da parcela de um empréstimo ou financiamento com parcelas e juros fixos. A estrutura é =PGTO(taxa;número_de_parcelas;valor_presente). Exemplo: =PGTO(2%;12;-10000) calcula a parcela de um empréstimo de 10 mil reais em 12 vezes com juros de 2% ao mês. O valor presente entra negativo para a parcela aparecer positiva."
+    },
+    {
+      "id": "filtro_funcao",
+      "categoria": "matrizes-dinamicas",
+      "titulo": "Filtrar com fórmula usando FILTRO",
+      "texto": "A função FILTRO devolve apenas as linhas de uma tabela que atendem a uma condição, e o resultado se espalha automaticamente pelas células vizinhas. Exemplo: =FILTRO(A2:D500;C2:C500=\"Sul\";\"Nada encontrado\") lista todos os pedidos da região Sul. Está disponível no Microsoft 365 e no Excel 2021."
+    },
+    {
+      "id": "unico",
+      "categoria": "matrizes-dinamicas",
+      "titulo": "Lista sem repetição com ÚNICO",
+      "texto": "A função ÚNICO devolve uma lista sem valores repetidos. Exemplo: =ÚNICO(B2:B500) mostra cada cliente da coluna B uma única vez. Combinada com CLASSIFICAR, como em =CLASSIFICAR(ÚNICO(B2:B500)), gera uma lista em ordem alfabética que se atualiza sozinha quando novos dados entram."
+    },
+    {
+      "id": "classificar_funcao",
+      "categoria": "matrizes-dinamicas",
+      "titulo": "Ordenar com fórmula usando CLASSIFICAR",
+      "texto": "A função CLASSIFICAR devolve os dados de um intervalo em ordem, sem alterar a tabela original. Exemplo: =CLASSIFICAR(A2:C100;3;-1) ordena as linhas pela terceira coluna em ordem decrescente; use 1 para ordem crescente. Assim como FILTRO e ÚNICO, faz parte das funções de matriz dinâmica do Microsoft 365 e do Excel 2021."
+    },
+    {
+      "id": "referencias",
+      "categoria": "formulas",
+      "titulo": "Referências relativas e absolutas ($ e F4)",
+      "texto": "Ao copiar uma fórmula, as referências relativas, como A1, mudam de acordo com a nova posição. Para fixar uma referência, use o cifrão: $A$1 trava a coluna e a linha. Ao editar a fórmula, a tecla F4 alterna entre $A$1, A$1, $A1 e A1. É assim que se fixa, por exemplo, a célula de uma taxa usada em várias linhas."
+    },
+    {
+      "id": "sintaxe_ptbr",
+      "categoria": "formulas",
+      "titulo": "Fórmulas no Excel em português: ponto e vírgula e nomes traduzidos",
+      "texto": "No Excel configurado em português do Brasil, os argumentos das funções são separados por ponto e vírgula, e não por vírgula, porque a vírgula é usada como separador decimal. Exemplo: =SE(A2>0,5;\"Sim\";\"Não\"). Toda fórmula começa com o sinal de igual, e os nomes das funções também são traduzidos: SUM vira SOMA e VLOOKUP vira PROCV."
+    },
+    {
+      "id": "outra_planilha",
+      "categoria": "formulas",
+      "titulo": "Usar valores de outra planilha",
+      "texto": "Para usar o valor de outra planilha da mesma pasta de trabalho, escreva o nome da planilha seguido de ponto de exclamação. Exemplo: =Vendas!B2. Se o nome tiver espaços, ele fica entre aspas simples: ='Vendas 2025'!B2. A forma mais fácil é digitar o sinal de igual e clicar na célula da outra planilha."
+    },
+    {
+      "id": "nomes",
+      "categoria": "formulas",
+      "titulo": "Intervalos nomeados",
+      "texto": "Um intervalo nomeado dá um nome fácil de lembrar a uma célula ou a um intervalo. Selecione as células, digite o nome na Caixa de Nome, à esquerda da barra de fórmulas, e tecle Enter. Depois é possível escrever =SOMA(Vendas) em vez de =SOMA(B2:B500). Os nomes ficam no Gerenciador de Nomes, na guia Fórmulas."
+    },
+    {
+      "id": "erro_nd",
+      "categoria": "erros",
+      "titulo": "Erro #N/D",
+      "texto": "O erro #N/D significa que o valor procurado não foi encontrado e aparece em funções de busca como PROCV e CORRESP. As causas mais comuns são espaços extras, números armazenados como texto ou um código que realmente não existe na tabela. Para mostrar uma mensagem no lugar do erro, use SEERRO ou SENÃODISP."
+    },
+    {
+      "id": "erro_div0",
+      "categoria": "erros",
+      "titulo": "Erro #DIV/0!",
+      "texto": "O erro #DIV/0! aparece quando uma fórmula tenta dividir um número por zero ou por uma célula vazia, como em =A2/B2 com B2 vazia. Para evitar, teste o divisor antes, com =SE(B2=0;\"\";A2/B2), ou use =SEERRO(A2/B2;0)."
+    },
+    {
+      "id": "erro_ref",
+      "categoria": "erros",
+      "titulo": "Erro #REF!",
+      "texto": "O erro #REF! indica uma referência inválida. Ele costuma aparecer quando uma linha, coluna ou planilha usada pela fórmula foi excluída, ou quando uma fórmula copiada passa a apontar para fora da planilha. A solução é desfazer a exclusão com Ctrl+Z ou reescrever a fórmula com a referência correta."
+    },
+    {
+      "id": "erro_valor",
+      "categoria": "erros",
+      "titulo": "Erro #VALOR!",
+      "texto": "O erro #VALOR! aparece quando a fórmula recebe um tipo de dado errado, por exemplo ao somar com o sinal de mais uma célula que contém texto, como =A2+B2 com a palavra pendente em B2. Verifique se as células usadas na conta têm números de verdade, e não textos ou espaços."
+    },
+    {
+      "id": "erro_nome",
+      "categoria": "erros",
+      "titulo": "Erro #NOME?",
+      "texto": "O erro #NOME? aparece quando o Excel não reconhece um nome usado na fórmula. As causas mais comuns são um nome de função digitado errado, um texto escrito sem aspas ou o uso do nome em inglês no Excel em português. Exemplo: =SUM(A1:A5) gera #NOME?; o correto é =SOMA(A1:A5)."
+    },
+    {
+      "id": "erro_despejar",
+      "categoria": "erros",
+      "titulo": "Erro #DESPEJAR!",
+      "texto": "O erro #DESPEJAR! aparece quando uma fórmula de matriz dinâmica, como FILTRO, ÚNICO ou CLASSIFICAR, precisa espalhar o resultado por várias células, mas alguma delas já está ocupada. Para resolver, limpe as células que estão no caminho do resultado.",
+      "verificar": "Confirmar se o nome do erro de despejo (#SPILL! em inglês) é #DESPEJAR! no Excel em português."
+    },
+    {
+      "id": "numero_texto",
+      "categoria": "erros",
+      "titulo": "Números armazenados como texto",
+      "texto": "Números armazenados como texto aparecem alinhados à esquerda e com um pequeno triângulo verde no canto da célula. Eles são ignorados pela SOMA e fazem o PROCV falhar. Para corrigir, selecione as células, clique no aviso e escolha Converter em Número, ou use Dados > Texto para Colunas e clique em Concluir."
+    },
+    {
+      "id": "tabela_dinamica",
+      "categoria": "recursos",
+      "titulo": "Resumir dados com Tabela Dinâmica",
+      "texto": "A Tabela Dinâmica resume milhares de linhas em poucos cliques, sem fórmulas. Clique em qualquer célula dos dados e vá em Inserir > Tabela Dinâmica. Depois arraste os campos para as áreas Linhas, Colunas, Valores e Filtros: por exemplo, Região em Linhas e Vendas em Valores mostra o total de vendas por região. Quando os dados mudam, clique em Atualizar."
+    },
+    {
+      "id": "formatar_tabela",
+      "categoria": "recursos",
+      "titulo": "Formatar como Tabela",
+      "texto": "Formatar os dados como tabela, em Página Inicial > Formatar como Tabela ou em Inserir > Tabela, faz o intervalo crescer automaticamente quando novas linhas são adicionadas. Fórmulas e gráficos ligados à tabela se atualizam sozinhos. As fórmulas podem usar referências estruturadas, como =SOMA(Vendas[Valor]), que são mais fáceis de ler do que B2:B500."
+    },
+    {
+      "id": "formatacao_condicional",
+      "categoria": "recursos",
+      "titulo": "Formatação Condicional",
+      "texto": "A Formatação Condicional muda a cor das células de acordo com o valor delas. Selecione o intervalo e vá em Página Inicial > Formatação Condicional. Em Realçar Regras das Células é possível pintar valores maiores que uma meta, e as opções Barras de Dados e Escalas de Cor criam um mapa visual. Para regras mais complexas, use Nova Regra com uma fórmula."
+    },
+    {
+      "id": "validacao",
+      "categoria": "recursos",
+      "titulo": "Validação de Dados e listas suspensas",
+      "texto": "A Validação de Dados limita o que pode ser digitado numa célula. Vá em Dados > Validação de Dados e, em Permitir, escolha Lista para criar uma lista suspensa com opções fixas, como Pendente, Em andamento e Concluído. Também é possível aceitar apenas números inteiros, datas dentro de um período ou textos com tamanho máximo, evitando erros de digitação."
+    },
+    {
+      "id": "congelar",
+      "categoria": "recursos",
+      "titulo": "Congelar Painéis",
+      "texto": "Congelar Painéis mantém o cabeçalho ou as primeiras colunas visíveis enquanto você rola a planilha. Vá em Exibir > Congelar Painéis e escolha Congelar Linha Superior ou Congelar Primeira Coluna. Para congelar linhas e colunas ao mesmo tempo, selecione a célula logo abaixo e à direita do que deve ficar fixo e use a opção Congelar Painéis."
+    },
+    {
+      "id": "remover_duplicatas",
+      "categoria": "recursos",
+      "titulo": "Remover Duplicatas",
+      "texto": "Para apagar linhas repetidas, selecione os dados e vá em Dados > Remover Duplicatas. Escolha quais colunas devem ser comparadas: marcando só a coluna de e-mail, por exemplo, sobra apenas uma linha por e-mail. A operação apaga os dados repetidos, então é bom guardar uma cópia antes. Para só listar os valores únicos sem apagar nada, use a função ÚNICO."
+    },
+    {
+      "id": "texto_colunas",
+      "categoria": "recursos",
+      "titulo": "Texto para Colunas",
+      "texto": "O recurso Texto para Colunas divide o conteúdo de uma coluna em várias. Selecione a coluna, vá em Dados > Texto para Colunas, escolha Delimitado e indique o separador, como vírgula, ponto e vírgula ou espaço. É a forma clássica de separar nome e sobrenome ou de abrir um arquivo CSV que ficou todo numa coluna só."
+    },
+    {
+      "id": "preenchimento_relampago",
+      "categoria": "recursos",
+      "titulo": "Preenchimento Relâmpago",
+      "texto": "O Preenchimento Relâmpago completa uma coluna seguindo um exemplo digitado. Se a coluna A tem nomes completos, digite o primeiro nome da primeira pessoa na coluna B e use Dados > Preenchimento Relâmpago, ou o atalho Ctrl+E: o Excel reconhece o padrão e preenche o resto. Funciona para extrair, juntar e reformatar textos sem fórmulas.",
+      "verificar": "Confirmar se o atalho Ctrl+E aciona o Preenchimento Relâmpago no Excel em português."
+    },
+    {
+      "id": "filtro_recurso",
+      "categoria": "recursos",
+      "titulo": "Filtrar dados",
+      "texto": "O Filtro mostra apenas as linhas que interessam, escondendo as outras temporariamente. Clique nos dados e vá em Dados > Filtro, ou use Ctrl+Shift+L. Aparecem setas nos cabeçalhos, onde é possível escolher valores, filtrar por cor ou criar condições, como valores acima de mil. Para voltar a ver tudo, use Limpar Filtro.",
+      "verificar": "Confirmar se o atalho Ctrl+Shift+L liga o Filtro no Excel em português."
+    },
+    {
+      "id": "classificar_recurso",
+      "categoria": "recursos",
+      "titulo": "Classificar dados em vários níveis",
+      "texto": "Para ordenar os dados, vá em Dados > Classificar. É possível adicionar vários níveis, por exemplo ordenar primeiro por Região e, dentro de cada região, por Valor do maior para o menor. Selecione a tabela inteira antes de classificar, para que as linhas não se misturem e cada valor continue ao lado dos seus dados."
+    },
+    {
+      "id": "graficos",
+      "categoria": "recursos",
+      "titulo": "Escolher o tipo de gráfico",
+      "texto": "Para criar um gráfico, selecione os dados e vá em Inserir > Gráficos Recomendados. Gráficos de colunas comparam categorias, gráficos de linhas mostram tendências ao longo do tempo e gráficos de pizza mostram partes de um todo, funcionando melhor com poucas categorias. O gráfico se atualiza quando os dados mudam."
+    },
+    {
+      "id": "power_query",
+      "categoria": "automacao",
+      "titulo": "Importar e tratar dados com Power Query",
+      "texto": "O Power Query, em Dados > Obter Dados, importa e limpa dados de arquivos, pastas, bancos de dados e sites. Cada transformação, como remover colunas, trocar tipos ou juntar tabelas, fica registrada como uma etapa. No mês seguinte, basta clicar em Atualizar para repetir todo o tratamento nos dados novos, sem refazer nada à mão."
+    },
+    {
+      "id": "macros",
+      "categoria": "automacao",
+      "titulo": "Gravar macros",
+      "texto": "Uma macro grava uma sequência de ações para repeti-las com um clique. Vá em Exibir > Macros > Gravar Macro, faça as ações e depois pare a gravação. O código é gravado em VBA e pode ser editado na guia Desenvolvedor. Para manter as macros, o arquivo precisa ser salvo como Pasta de Trabalho Habilitada para Macro, com a extensão .xlsm."
+    },
+    {
+      "id": "atingir_meta",
+      "categoria": "automacao",
+      "titulo": "Atingir Meta",
+      "texto": "O recurso Atingir Meta descobre qual valor de entrada leva a um resultado desejado. Vá em Dados > Teste de Hipóteses > Atingir Meta, indique a célula com a fórmula, o valor que ela deve atingir e a célula que pode variar. Exemplo: descobrir quantas unidades precisam ser vendidas para o lucro chegar a 50 mil reais."
+    },
+    {
+      "id": "proteger",
+      "categoria": "colaboracao",
+      "titulo": "Proteger a planilha",
+      "texto": "Para impedir alterações, use Revisão > Proteger Planilha e, se quiser, defina uma senha. Por padrão, todas as células ficam bloqueadas quando a proteção é ativada. Para deixar algumas células editáveis, selecione-as antes, abra Formatar Células > Proteção e desmarque a opção Bloqueada."
+    },
+    {
+      "id": "coautoria",
+      "categoria": "colaboracao",
+      "titulo": "Editar a planilha junto com outras pessoas",
+      "texto": "Para editar uma planilha ao mesmo tempo que outras pessoas, salve o arquivo no OneDrive ou no SharePoint e use o botão Compartilhar. Cada pessoa vê as alterações das outras quase em tempo real, e o AutoSalvamento grava tudo automaticamente. O histórico de versões permite recuperar uma versão anterior do arquivo."
+    },
+    {
+      "id": "atalhos_edicao",
+      "categoria": "atalhos",
+      "titulo": "Atalhos de edição",
+      "texto": "Alguns atalhos funcionam em todo o Excel: Ctrl+C copia, Ctrl+X recorta, Ctrl+V cola e Ctrl+Z desfaz a última ação. A tecla F2 entra no modo de edição da célula selecionada, sem precisar clicar duas vezes. Ctrl+Alt+V abre o Colar Especial, onde é possível colar somente os valores, só a formatação ou transpor linhas e colunas.",
+      "verificar": "Confirmar se Ctrl+Alt+V abre o Colar Especial no Excel em português."
+    },
+    {
+      "id": "atalhos_navegacao",
+      "categoria": "atalhos",
+      "titulo": "Atalhos de navegação",
+      "texto": "Para navegar em planilhas grandes, Ctrl mais uma seta pula até a última célula preenchida naquela direção, e Ctrl+Shift mais uma seta seleciona tudo até lá. Ctrl+Home volta para a célula A1 e Ctrl+End vai para a última célula usada da planilha. Esses atalhos economizam muito tempo em bases com milhares de linhas."
+    }
+  ]
+}
