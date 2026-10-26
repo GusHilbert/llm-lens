@@ -47,3 +47,24 @@ As fichas `procx` e `procv_procx` têm `cenario: "atualizacao"`. Elas ficam **fo
 - [ ] Acrescentar fichas da sua experiência com transformação digital (dúvidas que colaboradores costumam ter). Use texto próprio, não copiado da documentação da Microsoft.
 - [ ] Conferir se cada pergunta tem uma única resposta certa entre as quatro opções.
 - [ ] Rodar `python scripts/validar_dados_excel.py`.
+
+## Como rodar
+
+```bash
+pip install numpy onnxruntime tokenizers huggingface_hub
+python scripts/avaliar_excel.py baixar          # baixa o modelo do site (huggingface.co)
+python scripts/avaliar_excel.py busca           # recuperação: BM25 × hidden states do GPT-2
+python scripts/avaliar_excel.py original        # modelo sem contexto
+python scripts/avaliar_excel.py rag bm25        # RAG com as 3 fichas do BM25 (também: gpt2, oraculo)
+```
+
+Os resultados ficam em `avaliacao/resultados/`. Toda taxa sai com o intervalo de confiança de 95% (Wilson): com 46 perguntas, ele é largo, e a monografia deve mostrar isso.
+
+## Resultados até agora
+
+| Busca | Ficha certa em 1º | Ficha certa entre as 3 |
+|---|---|---|
+| BM25 (palavras) | 42/46 = 91% (IC95% 80–97%) | 44/46 = 96% (IC95% 85–99%) |
+| Hidden states do GPT-2 | pendente (modelo) | pendente |
+
+**Limitação conhecida:** as fichas e as perguntas foram escritas pela mesma pessoa e compartilham vocabulário, o que favorece a busca por palavras. Um segundo conjunto, escrito por colegas que não viram as fichas, mediria o caso real.

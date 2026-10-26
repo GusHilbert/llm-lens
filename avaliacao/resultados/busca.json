@@ -1,0 +1,469 @@
+{
+  "bm25": {
+    "top1": 42,
+    "top3": 44,
+    "n": 46,
+    "perguntas": [
+      {
+        "id": "t01",
+        "recuperadas": [
+          "somarproduto",
+          "tabela_dinamica",
+          "fimmes"
+        ],
+        "acerto_top1": false,
+        "acerto_top3": false
+      },
+      {
+        "id": "t02",
+        "recuperadas": [
+          "media",
+          "subtotal",
+          "mediase"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t03",
+        "recuperadas": [
+          "maximo_minimo",
+          "erro_ref",
+          "power_query"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t04",
+        "recuperadas": [
+          "cont_se",
+          "datas_partes",
+          "cont_ses"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t05",
+        "recuperadas": [
+          "cont_ses",
+          "filtro_funcao",
+          "coautoria"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t06",
+        "recuperadas": [
+          "somase",
+          "mediase",
+          "somarproduto"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t07",
+        "recuperadas": [
+          "cont_ses",
+          "fimmes",
+          "coautoria"
+        ],
+        "acerto_top1": false,
+        "acerto_top3": false
+      },
+      {
+        "id": "t08",
+        "recuperadas": [
+          "se",
+          "e_ou",
+          "ses"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t09",
+        "recuperadas": [
+          "seerro",
+          "erro_div0",
+          "erro_nd"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t10",
+        "recuperadas": [
+          "procv",
+          "proch",
+          "indice_corresp"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t11",
+        "recuperadas": [
+          "procx",
+          "seerro",
+          "procv_procx"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t12",
+        "recuperadas": [
+          "proch",
+          "procv",
+          "congelar"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t13",
+        "recuperadas": [
+          "indice_corresp",
+          "validacao",
+          "unico"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t14",
+        "recuperadas": [
+          "concatenar",
+          "sintaxe_ptbr",
+          "media"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t15",
+        "recuperadas": [
+          "esquerda_direita",
+          "num_caract",
+          "contagem"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t16",
+        "recuperadas": [
+          "num_caract",
+          "validacao",
+          "preenchimento_relampago"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t17",
+        "recuperadas": [
+          "arrumar",
+          "power_query",
+          "hoje_agora"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t18",
+        "recuperadas": [
+          "maiuscula",
+          "procv",
+          "coautoria"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t19",
+        "recuperadas": [
+          "hoje_agora",
+          "fimmes",
+          "unico"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t20",
+        "recuperadas": [
+          "diatrabalhototal",
+          "datas_partes",
+          "arrumar"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t21",
+        "recuperadas": [
+          "fimmes",
+          "datas_partes",
+          "hoje_agora"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t22",
+        "recuperadas": [
+          "arred",
+          "erro_valor",
+          "atalhos_edicao"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t23",
+        "recuperadas": [
+          "filtro_funcao",
+          "tabela_dinamica",
+          "procv"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t24",
+        "recuperadas": [
+          "unico",
+          "remover_duplicatas",
+          "somarproduto"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t25",
+        "recuperadas": [
+          "subtotal",
+          "tabela_dinamica",
+          "procv"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t26",
+        "recuperadas": [
+          "somarproduto",
+          "procv",
+          "texto_colunas"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t27",
+        "recuperadas": [
+          "pgto",
+          "mediase",
+          "fimmes"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t28",
+        "recuperadas": [
+          "referencias",
+          "erro_ref",
+          "arred"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t29",
+        "recuperadas": [
+          "atalhos_edicao",
+          "somarproduto",
+          "tabela_dinamica"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t30",
+        "recuperadas": [
+          "erro_nome",
+          "sintaxe_ptbr",
+          "atalhos_navegacao"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t31",
+        "recuperadas": [
+          "erro_nd",
+          "procv",
+          "procx"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t32",
+        "recuperadas": [
+          "erro_div0",
+          "erro_valor",
+          "erro_despejar"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t33",
+        "recuperadas": [
+          "erro_ref",
+          "referencias",
+          "procx"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t34",
+        "recuperadas": [
+          "tabela_dinamica",
+          "nomes",
+          "atingir_meta"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t35",
+        "recuperadas": [
+          "validacao",
+          "texto_colunas",
+          "indice_corresp"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t36",
+        "recuperadas": [
+          "atingir_meta",
+          "formatacao_condicional",
+          "formatar_tabela"
+        ],
+        "acerto_top1": false,
+        "acerto_top3": true
+      },
+      {
+        "id": "t37",
+        "recuperadas": [
+          "congelar",
+          "proch",
+          "hoje_agora"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t38",
+        "recuperadas": [
+          "texto_colunas",
+          "sintaxe_ptbr",
+          "remover_duplicatas"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t39",
+        "recuperadas": [
+          "power_query",
+          "tabela_dinamica",
+          "texto_colunas"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t40",
+        "recuperadas": [
+          "atingir_meta",
+          "cont_se",
+          "contagem"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t41",
+        "recuperadas": [
+          "remover_duplicatas",
+          "power_query",
+          "outra_planilha"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t42",
+        "recuperadas": [
+          "congelar",
+          "outra_planilha",
+          "power_query"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t43",
+        "recuperadas": [
+          "sintaxe_ptbr",
+          "erro_nome",
+          "hoje_agora"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t44",
+        "recuperadas": [
+          "coautoria",
+          "congelar",
+          "macros"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t45",
+        "recuperadas": [
+          "macros",
+          "erro_nd",
+          "procx"
+        ],
+        "acerto_top1": true,
+        "acerto_top3": true
+      },
+      {
+        "id": "t46",
+        "recuperadas": [
+          "procx",
+          "procv_procx",
+          "procv"
+        ],
+        "acerto_top1": false,
+        "acerto_top3": true
+      }
+    ]
+  }
+}
