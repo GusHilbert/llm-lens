@@ -5,7 +5,7 @@ Material das seções 8 (RAG) e 9 (fine-tuning) do LLM Lens e do experimento que
 | Arquivo | Para que serve |
 |---|---|
 | `frontend/data/fichas-excel.json` | Base de conhecimento: 66 fichas curtas sobre Excel em português do Brasil. São os documentos que o RAG recupera e o texto de treino do fine-tuning. Fica dentro de `frontend/` porque o site carrega o arquivo. |
-| `avaliacao/perguntas-teste-excel.json` | 45 perguntas de teste, escritas como paráfrases. **Nunca entram no treino.** |
+| `avaliacao/perguntas-teste-excel.json` | 46 perguntas de teste, escritas como paráfrases. **Nunca entram no treino.** |
 | `scripts/validar_dados_excel.py` | Confere os dois arquivos. Rode depois de qualquer edição. |
 
 ## Formato
@@ -38,11 +38,11 @@ Configurações comparadas:
 
 ### Cenário de atualização (PROCX)
 
-A ficha `procx` tem `cenario: "atualizacao"`. Ela fica **fora** do fine-tuning e entra **só** no RAG, como se a função tivesse sido lançada depois do treino. O validador garante que nenhuma outra ficha menciona o PROCX. A pergunta `t11` mede o efeito: o fine-tuning não tem como saber a resposta, e o RAG sabe assim que a ficha é adicionada. Esse é o argumento prático a favor do RAG para conhecimento que muda.
+As fichas `procx` e `procv_procx` têm `cenario: "atualizacao"`. Elas ficam **fora** do fine-tuning e entram **só** no RAG, como se a função tivesse sido lançada depois do treino. O validador garante que nenhuma outra ficha menciona o PROCX. A pergunta `t11` mede o efeito: o fine-tuning não tem como saber a resposta, e o RAG sabe assim que a ficha é adicionada. Esse é o argumento prático a favor do RAG para conhecimento que muda.
 
 ## Revisão (Gustav)
 
-- [ ] Confirmar no Excel os 9 detalhes marcados com `verificar` (o validador lista quais são). Corrigir o texto se algum estiver errado e apagar o campo.
+- [ ] Confirmar no Excel os detalhes marcados com `verificar` (o validador lista quais são). Corrigir o texto se algum estiver errado e apagar o campo.
 - [ ] Ler as fichas e corrigir o que não bate com o uso real no dia a dia.
 - [ ] Acrescentar fichas da sua experiência com transformação digital (dúvidas que colaboradores costumam ter). Use texto próprio, não copiado da documentação da Microsoft.
 - [ ] Conferir se cada pergunta tem uma única resposta certa entre as quatro opções.

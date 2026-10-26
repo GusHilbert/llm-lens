@@ -48,6 +48,7 @@
     {"id": "t42", "pergunta": "Em qual guia da faixa de opções fica o comando Congelar Painéis?", "inicio_resposta": "Fica na guia", "resposta": "Exibir", "distratores": ["Dados", "Inserir", "Revisão"], "fichas_relevantes": ["congelar"]},
     {"id": "t43", "pergunta": "No Excel em português do Brasil, que caractere separa os argumentos de uma função?", "inicio_resposta": "Os argumentos são separados por", "resposta": "ponto e vírgula", "distratores": ["vírgula", "dois-pontos", "barra"], "fichas_relevantes": ["sintaxe_ptbr"]},
     {"id": "t44", "pergunta": "Para que várias pessoas editem a mesma planilha ao mesmo tempo, onde o arquivo deve ser salvo?", "inicio_resposta": "Salve o arquivo no", "resposta": "OneDrive", "distratores": ["pen drive", "disco local", "HD externo"], "fichas_relevantes": ["coautoria"]},
-    {"id": "t45", "pergunta": "Gravei uma macro. Com qual extensão preciso salvar o arquivo para não perder o código?", "inicio_resposta": "Salve com a extensão", "resposta": ".xlsm", "distratores": [".xlsx", ".csv", ".pdf"], "fichas_relevantes": ["macros"]}
+    {"id": "t45", "pergunta": "Gravei uma macro. Com qual extensão preciso salvar o arquivo para não perder o código?", "inicio_resposta": "Salve com a extensão", "resposta": ".xlsm", "distratores": [".xlsx", ".csv", ".pdf"], "fichas_relevantes": ["macros"]},
+    {"id": "t46", "pergunta": "Vou enviar uma planilha para um fornecedor que ainda usa o Excel 2016. Qual função de busca devo usar para garantir que ela funcione lá?", "inicio_resposta": "Use a função", "resposta": "PROCV", "distratores": ["PROCX", "FILTRO", "ÚNICO"], "fichas_relevantes": ["procv_procx"]}
   ]
 }

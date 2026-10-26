@@ -7,8 +7,7 @@
       "id": "soma",
       "categoria": "funcoes-basicas",
       "titulo": "Somar valores com SOMA",
-      "texto": "A função SOMA adiciona todos os números de um intervalo de células. Exemplo: =SOMA(B2:B20) soma os valores de B2 até B20. Para somar uma coluna rapidamente, selecione a célula vazia logo abaixo dos números e clique em AutoSoma, na guia Página Inicial, ou use o atalho Alt+=.",
-      "verificar": "Confirmar se o atalho Alt+= insere a AutoSoma no Excel em português."
+      "texto": "A função SOMA adiciona todos os números de um intervalo de células. Exemplo: =SOMA(B2:B20) soma os valores de B2 até B20. Para somar uma coluna rapidamente, selecione a célula vazia logo abaixo dos números e clique em AutoSoma, na guia Página Inicial, ou use o atalho Alt+=."
     },
     {
       "id": "media",
@@ -96,6 +95,13 @@
       "texto": "A função PROCX é a sucessora do PROCV e do PROCH nas versões mais novas do Excel (Microsoft 365, Excel 2021 e Excel na Web). Ela busca em qualquer direção, usa correspondência exata por padrão e permite definir o que mostrar quando não encontra o valor. Exemplo: =PROCX(F2;A2:A500;C2:C500;\"Não encontrado\") busca o código de F2 na coluna A e devolve o preço da coluna C."
     },
     {
+      "id": "procv_procx",
+      "categoria": "busca",
+      "cenario": "atualizacao",
+      "titulo": "PROCV ou PROCX: qual usar",
+      "texto": "PROCV e PROCX fazem a mesma busca, mas de jeitos diferentes. Com o PROCV, =PROCV(F2;A2:C500;3;FALSO), você conta a coluna do resultado e precisa lembrar do FALSO. Com o PROCX, =PROCX(F2;A2:A500;C2:C500), você aponta a coluna de busca e a de resultado, sem contar nada. Prefira o PROCX, a não ser que a planilha vá ser aberta em versões antigas, como o Excel 2016, onde ele não existe e aparece o erro #NOME?."
+    },
+    {
       "id": "proch",
       "categoria": "busca",
       "titulo": "Buscar na horizontal com PROCH",
@@ -141,8 +147,7 @@
       "id": "substituir",
       "categoria": "texto",
       "titulo": "Trocar trechos de texto com SUBSTITUIR",
-      "texto": "A função SUBSTITUIR troca um trecho de texto por outro dentro de uma célula. A estrutura é =SUBSTITUIR(texto;texto_antigo;novo_texto). Exemplo: =SUBSTITUIR(A2;\".\";\"\") remove todos os pontos de um CPF. Para substituir em várias células de uma vez, sem fórmula, use Localizar e Substituir, com o atalho Ctrl+U.",
-      "verificar": "Confirmar se Ctrl+U abre Localizar e Substituir no Excel em português."
+      "texto": "A função SUBSTITUIR troca um trecho de texto por outro dentro de uma célula. A estrutura é =SUBSTITUIR(texto;texto_antigo;novo_texto). Exemplo: =SUBSTITUIR(A2;\".\";\"\") remove todos os pontos de um CPF. Para substituir em várias células de uma vez, sem fórmula, use Localizar e Substituir, com o atalho Ctrl+U."
     },
     {
       "id": "texto_funcao",
@@ -155,21 +160,13 @@
       "id": "hoje_agora",
       "categoria": "datas",
       "titulo": "Data e hora atuais com HOJE e AGORA",
-      "texto": "A função HOJE devolve a data atual e a função AGORA devolve a data e a hora atuais. Elas não têm argumentos: =HOJE() e =AGORA(). As duas se atualizam sempre que a planilha é recalculada. Para inserir a data de hoje como um valor fixo, que não muda depois, use o atalho Ctrl+; (ponto e vírgula).",
-      "verificar": "Confirmar o atalho Ctrl+; para inserir a data atual no Excel em português."
+      "texto": "A função HOJE devolve a data atual e a função AGORA devolve a data e a hora atuais. Elas não têm argumentos: =HOJE() e =AGORA(). As duas se atualizam sempre que a planilha é recalculada, por isso não servem para registrar a data em que algo aconteceu: nesse caso, digite a data na célula."
     },
     {
       "id": "datas_partes",
       "categoria": "datas",
       "titulo": "Trabalhar com partes de datas: DIA, MÊS, ANO e DATA",
       "texto": "As funções DIA, MÊS e ANO extraem partes de uma data: =ANO(A2) devolve o ano da data em A2. A função DATA faz o caminho inverso e monta uma data a partir do ano, do mês e do dia: =DATA(2025;12;31). No Excel, datas são números de série, por isso é possível subtrair duas datas para saber quantos dias se passaram entre elas."
-    },
-    {
-      "id": "datadif",
-      "categoria": "datas",
-      "titulo": "Idade e tempo de casa com DATADIF",
-      "texto": "A função DATADIF calcula a diferença entre duas datas em anos, meses ou dias completos. Exemplo: =DATADIF(A2;HOJE();\"Y\") calcula a idade de uma pessoa ou o tempo de casa de um funcionário em anos. Ela não aparece na lista de sugestões ao digitar, mas funciona normalmente. Para meses use \"M\" e para dias use \"D\".",
-      "verificar": "Confirmar se as unidades continuam \"Y\", \"M\" e \"D\" (em inglês) no Excel em português."
     },
     {
       "id": "diatrabalhototal",
@@ -344,15 +341,13 @@
       "id": "preenchimento_relampago",
       "categoria": "recursos",
       "titulo": "Preenchimento Relâmpago",
-      "texto": "O Preenchimento Relâmpago completa uma coluna seguindo um exemplo digitado. Se a coluna A tem nomes completos, digite o primeiro nome da primeira pessoa na coluna B e use Dados > Preenchimento Relâmpago, ou o atalho Ctrl+E: o Excel reconhece o padrão e preenche o resto. Funciona para extrair, juntar e reformatar textos sem fórmulas.",
-      "verificar": "Confirmar se o atalho Ctrl+E aciona o Preenchimento Relâmpago no Excel em português."
+      "texto": "O Preenchimento Relâmpago completa uma coluna seguindo um exemplo digitado. Se a coluna A tem nomes completos, digite o primeiro nome da primeira pessoa na coluna B e use Dados > Preenchimento Relâmpago, ou o atalho Ctrl+E: o Excel reconhece o padrão e preenche o resto. Funciona para extrair, juntar e reformatar textos sem fórmulas."
     },
     {
       "id": "filtro_recurso",
       "categoria": "recursos",
       "titulo": "Filtrar dados",
-      "texto": "O Filtro mostra apenas as linhas que interessam, escondendo as outras temporariamente. Clique nos dados e vá em Dados > Filtro, ou use Ctrl+Shift+L. Aparecem setas nos cabeçalhos, onde é possível escolher valores, filtrar por cor ou criar condições, como valores acima de mil. Para voltar a ver tudo, use Limpar Filtro.",
-      "verificar": "Confirmar se o atalho Ctrl+Shift+L liga o Filtro no Excel em português."
+      "texto": "O Filtro mostra apenas as linhas que interessam, escondendo as outras temporariamente. Clique nos dados e vá em Dados > Filtro, ou use Ctrl+Shift+L. Aparecem setas nos cabeçalhos, onde é possível escolher valores, filtrar por cor ou criar condições, como valores acima de mil. Para voltar a ver tudo, use Limpar Filtro."
     },
     {
       "id": "classificar_recurso",
@@ -400,8 +395,7 @@
       "id": "atalhos_edicao",
       "categoria": "atalhos",
       "titulo": "Atalhos de edição",
-      "texto": "Alguns atalhos funcionam em todo o Excel: Ctrl+C copia, Ctrl+X recorta, Ctrl+V cola e Ctrl+Z desfaz a última ação. A tecla F2 entra no modo de edição da célula selecionada, sem precisar clicar duas vezes. Ctrl+Alt+V abre o Colar Especial, onde é possível colar somente os valores, só a formatação ou transpor linhas e colunas.",
-      "verificar": "Confirmar se Ctrl+Alt+V abre o Colar Especial no Excel em português."
+      "texto": "Alguns atalhos funcionam em todo o Excel: Ctrl+C copia, Ctrl+X recorta, Ctrl+V cola e Ctrl+Z desfaz a última ação. A tecla F2 entra no modo de edição da célula selecionada, sem precisar clicar duas vezes. Ctrl+Alt+V abre o Colar Especial, onde é possível colar somente os valores, só a formatação ou transpor linhas e colunas."
     },
     {
       "id": "atalhos_navegacao",
